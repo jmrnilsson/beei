@@ -3,4 +3,4 @@ bower_components/
 *.db
 *.sqlite
 .vscode/
-./*.js
+*.js
