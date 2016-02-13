@@ -1,6 +1,2 @@
-node_modules/
-bower_components/
-*.db
-*.sqlite
 .vscode/
-*.js
+venv/
