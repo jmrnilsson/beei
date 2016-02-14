@@ -2,14 +2,14 @@ import requests
 from nose.tools import assert_equal, with_setup
 from mock import Mock
 from fetch import brewery_db
-from utils import get_logged_response
+from utils import json_load_config
 
 original_requests_get = requests.get
 
 
 def set_up():
     response = Mock()
-    response.json = Mock(return_value=get_logged_response('brewery_db_response.json'))
+    response.json = Mock(return_value=json_load_config('response_brewery_db.json'))
     requests.get = Mock(return_value=response)
 
 

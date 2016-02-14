@@ -1,8 +1,8 @@
 from nose.tools import assert_equal
-from utils import get_logged_response
+from utils import json_load_config
 
 
 def test_json_response():
-    response = get_logged_response('sb_response.json')
+    response = json_load_config('response_sb.json')
     next_product_number = response['ProductSearchResults'][0]['ProductNumber']
     assert_equal(next_product_number, '8965101')

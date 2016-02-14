@@ -1,11 +1,10 @@
 import requests
-
-import config.brewery_db as brewery_db
+from utils import brewery_db_api_key
 
 
 def get_attributes():
     def attributes():
-        yield 'key', brewery_db.api_key()
+        yield 'key', brewery_db_api_key()
         yield 'format', 'json'
     return '&'.join('='.join(attr) for attr in attributes())
 
