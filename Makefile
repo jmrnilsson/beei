@@ -29,7 +29,7 @@ venv/requirements.txt: venv requirements.txt
 ## Testing
 ######################################################
 
-.PHONY: test test-unit
+.PHONY: test test-unit test-integration
 
 test: test-unit
 
@@ -37,3 +37,7 @@ test-unit: setup
 	@ echo "Running unit tests"
 	@ . venv/bin/activate; flake8 --max-line-length=100 test/unit
 	@ . venv/bin/activate; nosetests test/unit
+
+test-integration: setup
+	@ echo "Running integration tests"
+	@ . venv/bin/activate; nosetests test/integration
