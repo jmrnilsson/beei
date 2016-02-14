@@ -1,23 +1,15 @@
 import requests
-from nose.tools import assert_equal, with_setup
-from mock import Mock
-from fetch import brewery_db
+from nose.tools import assert_equal
+from mock import Mock, patch
+from fetch import brewery_db as client
 from utils import json_load_config
 
-original_requests_get = requests.get
+
+def response_mock():
+    return Mock(json=Mock(return_value=json_load_config('response_brewery_db.json')))
 
 
-def set_up():
-    response = Mock()
-    response.json = Mock(return_value=json_load_config('response_brewery_db.json'))
-    requests.get = Mock(return_value=response)
-
-
-def tear_down():
-    requests.get = original_requests_get
-
-
-@with_setup(set_up, tear_down)
 def test_find_by_id():
-    actual = brewery_db.find_by_id('oeGSxs')
-    assert_equal(actual['data']['name'], 'Naughty 90')
+    with patch.object(requests, 'get', return_value=response_mock()):
+        actual = client.find_by_id('oeGSxs')
+        assert_equal(actual['data']['name'], 'Naughty 91')
