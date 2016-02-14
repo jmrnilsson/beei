@@ -1,11 +1,11 @@
 import os
 import inspect
 import json
-import beei
+import bee
 
 
 def json_load_config(name):
-    path = os.path.dirname(os.path.abspath(inspect.getfile(beei)))
+    path = os.path.dirname(os.path.abspath(inspect.getfile(bee)))
     response_file = os.path.dirname(path + '/config/') + '/' + name
     with open(response_file) as response:
         return json.load(response)
