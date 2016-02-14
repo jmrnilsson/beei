@@ -35,5 +35,5 @@ test: test-unit
 
 test-unit: setup
 	@ echo "Running unit tests"
-	@ . venv/bin/activate; flake8 bin
-	# @ . venv/bin/activate; nosetests test/unit
+	@ . venv/bin/activate; flake8 --max-line-length=100 test/unit
+	@ . venv/bin/activate; nosetests test/unit

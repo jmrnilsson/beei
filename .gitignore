@@ -1,2 +1,5 @@
-.vscode/
 venv/
+config/
+**/*.pyc
+.vscode/
+.idea/
