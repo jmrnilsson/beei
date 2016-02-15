@@ -16,7 +16,7 @@ def url_sb():
 
 
 def url_invalid_ip_address():
-    return json_load_config('config.json')['url_invalid_ip_address']
+    return json_load_config('config.json')['url_invalid_ip']
 
 
 def url_check_ip():
