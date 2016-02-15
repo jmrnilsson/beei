@@ -11,8 +11,16 @@ def json_load_config(name):
         return json.load(response)
 
 
-def sb_url():
-    return json_load_config('config.json')['sb_url']
+def url_sb():
+    return json_load_config('config.json')['url_sb']
+
+
+def url_invalid_ip_address():
+    return json_load_config('config.json')['url_invalid_ip_address']
+
+
+def url_check_ip():
+    return json_load_config('config.json')['url_check_ip']
 
 
 def brewery_db_api_key():
