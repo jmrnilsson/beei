@@ -1,5 +1,4 @@
 import requests
-import urllib
 from utils import brewery_db_api_key
 
 
@@ -12,9 +11,5 @@ def find_by_name(name):
 
 
 def __get(url, params={}):
-    params.update(__attributes())
+    params.update({'key': brewery_db_api_key(), 'format': 'json'})
     return requests.get(url, params).json()
-
-
-def __attributes():
-    return {'key': brewery_db_api_key(), 'format': 'json'}
