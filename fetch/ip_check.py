@@ -7,10 +7,12 @@ from utils import url_invalid_ip_address, url_check_ip
 def check_ip():
     def map_ip(html_source):
         ip = re.findall('(?:[0-9]{1,3}\.){3}[0-9]{1,3}', html_source)
-        return {'ip': _zfill(ip[0])}
+        return {
+            'ip': _zfill(ip[0]),
+            'utctime': str(datetime.utcnow())
+        }
 
-    json_ip = http_cache.get(url_check_ip(), hint='checkip', to_json=map_ip)
-    return json_ip
+    return http_cache.get(url_check_ip(), hint='checkip', to_json=map_ip)
 
 
 def find_all_invalid_ip_addresses():

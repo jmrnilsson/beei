@@ -16,7 +16,8 @@ def get(url, params=None, hint=None, cache_days=0, to_json=None):
 
     if os.path.isfile(filename):
         modified = datetime.fromtimestamp(os.path.getmtime(filename))
-        if datetime.now() + timedelta(days=cache_days) > modified:
+        renewal = modified + timedelta(days=cache_days)
+        if datetime.now() < renewal:
             with open(filename, 'r') as storage:
                 return json.load(storage)
 
