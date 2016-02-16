@@ -10,7 +10,7 @@ def test_find_all_invalid_ip_addresses():
 
 def test_check_ip():
     actual = check_ip()
-    assert_equal(actual['ip'][:1], '8')
+    assert_equal(actual[:1], '8')
 
 
 def test_nok_ip():

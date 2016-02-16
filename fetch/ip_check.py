@@ -12,7 +12,7 @@ def check_ip():
             'utc_datetime': str(datetime.utcnow())
         }
 
-    return http_cache.get(url_check_ip(), hint='check_ip', to_json=map_ip)
+    return http_cache.get(url_check_ip(), hint='check_ip', to_json=map_ip)['ip']
 
 
 def find_all_void_ips():
@@ -38,7 +38,7 @@ def assert_ok_ip():
     def zfill(ip_address):
         return '.'.join([number.zfill(3) for number in ip_address.split('.')])
 
-    ip = check_ip()['ip']
+    ip = check_ip()
     ip_zfill = zfill(ip)
     for ip_range in find_all_void_ips():
         if zfill(ip_range['start']) < ip_zfill < zfill(ip_range['end']):
