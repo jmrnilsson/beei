@@ -15,7 +15,7 @@ def check_ip():
     return http_cache.get(url_check_ip(), hint='check_ip', to_json=map_ip)
 
 
-def find_all_invalid_ip_addresses():
+def find_all_void_ips():
     def map_ip_ranges(text):
         return [to_ip_range(l) for l in text.splitlines() if len(l) > 10]
 
@@ -40,6 +40,6 @@ def assert_ok_ip():
 
     ip = check_ip()['ip']
     ip_zfill = zfill(ip)
-    for ip_range in find_all_invalid_ip_addresses():
+    for ip_range in find_all_void_ips():
         if zfill(ip_range['start']) < ip_zfill < zfill(ip_range['end']):
             raise RuntimeError('Using a void ip {} in range {}'.format(ip, ip_range['owner']))
