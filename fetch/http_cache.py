@@ -5,14 +5,17 @@ import json
 import os.path
 import inspect
 from datetime import datetime, timedelta
+import re
 import bee
 
-def get(url, params=None, hint=None, cache_days=0, to_json=None):
+
+def get(url, params=None, cache_days=0, to_json=None):
     url_params = url if not params else url + '?' + urllib.urlencode(params)
-    hash = hashlib.sha1(url_params).hexdigest()
-    filename = '{}-{}'.format(hint, hash) if hint else hash
+    site_hash = hashlib.sha1(url_params).hexdigest()
+    url_words = re.findall('[0-9A-Za-z]{3,}', url)
+    site = next(w for w in url_words if w not in ('https', 'http', 'www', 'dns', 'api'))
     path = os.path.dirname(os.path.abspath(inspect.getfile(bee)))
-    filename = path + '/logs/' + filename + '.json'
+    filename = '{}/logs/{}-{}.json'.format(path, site, site_hash)
 
     if os.path.isfile(filename):
         modified = datetime.fromtimestamp(os.path.getmtime(filename))

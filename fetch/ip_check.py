@@ -12,7 +12,7 @@ def check_ip():
             'utc_datetime': str(datetime.utcnow())
         }
 
-    return http_cache.get(url_check_ip(), hint='check_ip', to_json=map_ip)['ip']
+    return http_cache.get(url_check_ip(), to_json=map_ip)['ip']
 
 
 def find_all_void_ips():
@@ -31,7 +31,7 @@ def find_all_void_ips():
         }
 
     url = url_invalid_ip_address()
-    return http_cache.get(url, cache_days=50, hint='ip_list', to_json=map_ip_ranges)
+    return http_cache.get(url, cache_days=150, to_json=map_ip_ranges)
 
 
 def assert_ok_ip():
