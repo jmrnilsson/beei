@@ -42,4 +42,4 @@ def assert_ok_ip():
     ip_zfill = zfill(ip)
     for ip_range in find_all_void_ips():
         if zfill(ip_range['start']) < ip_zfill < zfill(ip_range['end']):
-            raise RuntimeError('Using a void ip {} in range {}'.format(ip, ip_range['owner']))
+            raise RuntimeError('Found ip ({}) in {}'.format(ip, ip_range['owner']))
