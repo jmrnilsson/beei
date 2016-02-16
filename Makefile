@@ -11,8 +11,10 @@ SHELL=bash
 .PHONY: clean setup
 
 clean:
-	rm -rf build
-	rm -rf venv
+	rm -rf ./build
+	rm -rf ./venv
+	rm -rf ./logs
+	mkdir ./logs
 
 setup: venv venv/requirements.txt
 
