@@ -10,9 +10,9 @@ import bee
 
 
 class HttpCache:
-    def __init__(self, cache_days, to_dict=None):
+    def __init__(self, cache_days, map_to=None):
         self.cache_days = cache_days
-        self.to_dict = to_dict if to_dict else self._to_dict
+        self.map_to = map_to if map else self._map_json
 
     def get(self, url, params=None):
         url_params = url if not params else url + '?' + urllib.urlencode(params)
@@ -32,12 +32,12 @@ class HttpCache:
         response = requests.get(url, params=params)
         response.raise_for_status()
         with open(filename, 'w') as storage:
-            result = self.to_dict(response)
+            result = self.map_to(response)
             storage.truncate()
             storage.write(json.dumps(result, indent=2))
 
         return result
 
     @staticmethod
-    def _to_dict(response):
+    def _map_json(response):
         return response.json()

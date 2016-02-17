@@ -12,7 +12,7 @@ def check():
             'utc_datetime': str(datetime.utcnow())
         }
 
-    return HttpCache(0, to_dict=map_ip).get(url_check_ip())['ip']
+    return HttpCache(0, map_to=map_ip).get(url_check_ip())['ip']
 
 
 def find_all_void():
@@ -30,7 +30,7 @@ def find_all_void():
             'owner': owner
         }
 
-    return HttpCache(150, to_dict=map_ip_ranges).get(url_invalid_ip_address())
+    return HttpCache(150, map_to=map_ip_ranges).get(url_invalid_ip_address())
 
 
 def ok():
