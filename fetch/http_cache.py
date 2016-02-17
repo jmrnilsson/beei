@@ -32,12 +32,12 @@ class HttpCache:
         response = requests.get(url, params=params)
         response.raise_for_status()
         with open(filename, 'w') as storage:
-            storage.truncate()
             result = self.to_dict(response)
+            storage.truncate()
             storage.write(json.dumps(result, indent=2))
 
         return result
 
     @staticmethod
-    def _to_dict(self, response):
+    def _to_dict(response):
         return response.json()
