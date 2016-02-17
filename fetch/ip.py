@@ -1,3 +1,4 @@
+import sys
 from datetime import datetime
 import re
 from http_cache import HttpCache
@@ -6,9 +7,10 @@ from utils import url_invalid_ip_address, url_check_ip
 
 def check():
     def map_ip(response):
-        ip = re.findall('(?:[0-9]{1,3}\.){3}[0-9]{1,3}', response.text)
+        ip = re.findall('(?:[0-9]{1,3}\.){3}[0-9]{1,3}', response.text)[0]
+        print >> sys.stdout, 'ip: ' + unicode(ip)
         return {
-            'ip': ip[0],
+            'ip': ip,
             'utc_datetime': str(datetime.utcnow())
         }
 
@@ -42,3 +44,5 @@ def ok():
     for ip_range in find_all_void():
         if zfill(ip_range['start']) < ip_zfill < zfill(ip_range['end']):
             raise RuntimeError('Found ip ({}) in {}'.format(ip, ip_range['owner']))
+
+    return True
