@@ -4,7 +4,7 @@ from http_cache import HttpCache
 from utils import url_invalid_ip_address, url_check_ip
 
 
-def check_ip():
+def check():
     def map_ip(response):
         ip = re.findall('(?:[0-9]{1,3}\.){3}[0-9]{1,3}', response.text)
         return {
@@ -15,7 +15,7 @@ def check_ip():
     return HttpCache(0, to_dict=map_ip).get(url_check_ip())['ip']
 
 
-def find_all_void_ips():
+def find_all_void():
     def map_ip_ranges(response):
         return [to_ip_range(l) for l in response.text.splitlines() if len(l) > 10]
 
@@ -33,12 +33,12 @@ def find_all_void_ips():
     return HttpCache(150, to_dict=map_ip_ranges).get(url_invalid_ip_address())
 
 
-def assert_ok_ip():
+def ok():
     def zfill(ip_address):
         return '.'.join([number.zfill(3) for number in ip_address.split('.')])
 
-    ip = check_ip()
+    ip = check()
     ip_zfill = zfill(ip)
-    for ip_range in find_all_void_ips():
+    for ip_range in find_all_void():
         if zfill(ip_range['start']) < ip_zfill < zfill(ip_range['end']):
             raise RuntimeError('Found ip ({}) in {}'.format(ip, ip_range['owner']))
