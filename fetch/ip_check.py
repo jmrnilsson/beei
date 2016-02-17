@@ -1,23 +1,23 @@
 from datetime import datetime
 import re
-import http_cache
+from http_cache import HttpCache
 from utils import url_invalid_ip_address, url_check_ip
 
 
 def check_ip():
-    def map_ip(html_source):
-        ip = re.findall('(?:[0-9]{1,3}\.){3}[0-9]{1,3}', html_source)
+    def map_ip(response):
+        ip = re.findall('(?:[0-9]{1,3}\.){3}[0-9]{1,3}', response.text)
         return {
             'ip': ip[0],
             'utc_datetime': str(datetime.utcnow())
         }
 
-    return http_cache.get(url_check_ip(), to_json=map_ip)['ip']
+    return HttpCache(0, to_dict=map_ip).get(url_check_ip())['ip']
 
 
 def find_all_void_ips():
-    def map_ip_ranges(text):
-        return [to_ip_range(l) for l in text.splitlines() if len(l) > 10]
+    def map_ip_ranges(response):
+        return [to_ip_range(l) for l in response.text.splitlines() if len(l) > 10]
 
     def to_ip_range(line):
         start, end, _, assigned, owner = line.split(',')[:5]
@@ -30,8 +30,7 @@ def find_all_void_ips():
             'owner': owner
         }
 
-    url = url_invalid_ip_address()
-    return http_cache.get(url, cache_days=150, to_json=map_ip_ranges)
+    return HttpCache(150, to_dict=map_ip_ranges).get(url_invalid_ip_address())
 
 
 def assert_ok_ip():

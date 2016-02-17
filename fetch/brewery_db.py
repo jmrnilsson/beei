@@ -1,4 +1,4 @@
-import http_cache
+from http_cache import HttpCache
 from utils import brewery_db_api_key
 
 
@@ -12,4 +12,4 @@ def find_by_name(name):
 
 def _get(url, params={}):
     params.update({'key': brewery_db_api_key(), 'format': 'json'})
-    return http_cache.get(url, params, cache_days=3)
+    return HttpCache(3).get(url, params)

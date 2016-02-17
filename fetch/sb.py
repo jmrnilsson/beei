@@ -1,6 +1,6 @@
-import http_cache
+from http_cache import HttpCache
 from utils import url_sb
 
 
 def find_all_by_page(page):
-    return http_cache.get(url_sb().format(page=page), cache_days=30)
+    return HttpCache(30).get(url_sb().format(page=page))
