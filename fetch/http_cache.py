@@ -6,6 +6,7 @@ import os.path
 import inspect
 from datetime import datetime, timedelta
 import re
+import sys
 import bee
 
 
@@ -27,11 +28,13 @@ class HttpCache:
             renewal = modified + timedelta(days=self.cache_days)
             if datetime.now() < renewal:
                 with open(filename, 'r') as storage:
+                    print >> sys.stdout, 'cached: ' + filename
                     return json.load(storage)
 
         response = requests.get(url, params=params)
         response.raise_for_status()
         with open(filename, 'w') as storage:
+            print >> sys.stdout, 'get: ' + filename
             result = self.map_to(response)
             storage.truncate()
             storage.write(json.dumps(result, indent=2))
