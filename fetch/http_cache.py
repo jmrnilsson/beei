@@ -19,14 +19,15 @@ class HttpCache:
         url_words = re.findall('[0-9A-Za-z]{3,}', url)
         site = next(w for w in url_words if w not in ('https', 'http', 'www', 'dns', 'api'))
         path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        filename = '{}/logs/{}-{}.json'.format(path, site, site_hash)
+        relative_file = '/logs/{}-{}.json'.format(site, site_hash)
+        filename = path + relative_file
 
         if os.path.isfile(filename):
             modified = datetime.fromtimestamp(os.path.getmtime(filename))
             renewal = modified + timedelta(days=self.cache_days)
             if datetime.now() < renewal:
                 with open(filename, 'r') as storage:
-                    print >> sys.stdout, 'cached: ' + filename
+                    print >> sys.stdout, 'cached: .' + relative_file
                     return json.load(storage)
 
         response = requests.get(url, params=params)
