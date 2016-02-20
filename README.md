@@ -18,7 +18,8 @@ Once data has been fetch querying is possible with `jq` and `grep`.
     ls . | xargs cat ./logs/ | grep -A 50 -B 50 brewery
     
     # Mulitple expressions
-    ls . | xargs cat ./logs/ | grep 'ProductName\|"ibu"'
+    ls . | xargs cat ./logs/ | jq '. | {name: .data[].name, style: .data[].style.name, abv: .data[].abv}'
+
 
 
 ## Useful docs to play around with..
