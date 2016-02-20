@@ -21,8 +21,7 @@ Once data has been fetch querying is possible with `jq` and `grep`.
     cat brewerydb-fd3ee35373c7e9b6a29a657e3d8d6aedbba21b23.json | jq '[. | {name: .data[].name, style: .data[].style.name, abv: .data[].abv}]'
     
     # Extract value for multiple files
-    ls -la . | grep brewerydb | awk '$5 > 46 {print "./"$9}' | xargs cat | jq '. | {name: .data[].name, style: .data[].style.name, abv: .data[].abv}'
-
+    ls -la . | grep brewerydb | awk '$5 > 46 {print "./"$9}' | xargs cat | jq '[{name: .data[].name, style: .data[].style.name, abv: .data[].abv}]'
 
 
 ## Useful docs to play around with..
