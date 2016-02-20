@@ -14,11 +14,14 @@ Once data has been fetch querying is possible with `jq` and `grep`.
     # Find all product names
     ls . | xargs cat ./logs/ | grep ProductName | awk '{print $2}' | sort | uniq
 
-    # With seek ahead and behind
-    ls . | xargs cat ./logs/ | grep -A 50 -B 50 brewery
+    # With look ahead and behind
+    ls . | xargs cat ./logs/ | grep -A 50 -B 50 some_brewery
     
-    # Mulitple expressions
-    ls . | xargs cat ./logs/ | jq '. | {name: .data[].name, style: .data[].style.name, abv: .data[].abv}'
+    # Extract value with jq
+    cat brewerydb-fd3ee35373c7e9b6a29a657e3d8d6aedbba21b23.json | jq '[. | {name: .data[].name, style: .data[].style.name, abv: .data[].abv}]'
+    
+    # Extract value for multiple files
+    ls -la . | grep brewerydb | awk '$5 > 46 {print "./"$9}' | xargs cat | jq '. | {name: .data[].name, style: .data[].style.name, abv: .data[].abv}'
 
 
 
