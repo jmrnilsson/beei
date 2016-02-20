@@ -10,17 +10,16 @@ The software licensed under MIT.
 
 Once data has been fetch querying is possible with `jq` and `grep`.
 
-**Find all product names:**
 
+    # Find all product names
     ls . | xargs cat ./logs/ | grep ProductName | awk '{print $2}' | sort | uniq
 
-**With seek ahead and behind:**
-
+    # With seek ahead and behind
     ls . | xargs cat ./logs/ | grep -A 50 -B 50 brewery
     
-**Mulitple expressions**
-
+    # Mulitple expressions
     ls . | xargs cat ./logs/ | grep 'ProductName\|"ibu"'
+
 
 ## Useful docs to play around with..
 + SocketIO https://github.com/miguelgrinberg/python-socketio
