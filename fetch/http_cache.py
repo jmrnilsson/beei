@@ -9,9 +9,10 @@ import sys
 
 
 class HttpCache:
-    def __init__(self, cache_days, map_to=None):
+    def __init__(self, session, cache_days, map_to=None):
         self.cache_days = cache_days
         self.map_to = map_to if map_to else self._map_json
+        self.session = session
 
     def get(self, url, params=None):
         url_params = url if not params else url + '?' + urllib.urlencode(params)
@@ -30,7 +31,7 @@ class HttpCache:
                     print >> sys.stdout, 'cached: .' + relative_file
                     return json.load(storage)
 
-        response = requests.get(url, params=params)
+        response = self.session.get(url, params=params)
         response.raise_for_status()
         with open(filename, 'w') as storage:
             print >> sys.stdout, 'get: ' + filename
