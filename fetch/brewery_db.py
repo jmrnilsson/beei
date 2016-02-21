@@ -12,4 +12,4 @@ def find_by_name(name):
 
 def _get(url, params={}):
     params.update({'key': brewery_db_api_key(), 'format': 'json'})
-    return HttpCache(3).get(url, params)
+    return HttpCache(14).get(url, params)

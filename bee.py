@@ -10,7 +10,7 @@ def main(sys_args):
     if not ip.ok():
         return 1
 
-    for i in xrange(1, 20):
+    for i in xrange(1, 26):
         b_list = sb.find_all_by_page(i)[sb_list()]
         print >> sys.stdout, 'add: ' + unicode(len(b_list))
         for b in b_list:
