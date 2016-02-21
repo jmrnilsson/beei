@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import sys
 import requests
+from fetch.http_cache import HttpCache
 from fetch import brewery_db, sb
 from fetch.ip import IP
 from utils import sb_name_0, sb_name_1, sb_list
@@ -8,8 +9,11 @@ from utils import sb_name_0, sb_name_1, sb_list
 
 def main(sys_args):
     with requests.session() as session:
-        ip = IP(session)
-        
+        http_cache = HttpCache(session)
+        ip = IP(http_cache)
+        sb = SB(http_cache)
+        brewery_db = BreweryDB(http_cache)
+
         if not ip.ok():
             return 1
 
