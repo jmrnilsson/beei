@@ -10,8 +10,9 @@ def main(sys_args):
     if not ip.ok():
         return 1
 
-    for i in xrange(1, 31):
-        b_list = sb.find_all_by_page(i)[sb_list()]
+    for i in xrange(1, 32):
+        response, next_page = sb.find_all_by_page(i)
+        b_list = response[sb_list()]
         print >> sys.stdout, 'add: ' + unicode(len(b_list))
         for b in b_list:
             name_0 = b.get(sb_name_0())
@@ -20,6 +21,8 @@ def main(sys_args):
                 brewery_db.find_by_name(name_0)
             if name_1:
                 brewery_db.find_by_name(name_1)
+            if not next_page:
+                break
 
     return 0
 

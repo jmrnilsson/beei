@@ -25,6 +25,10 @@ def sb_list():
     return json_load_config('config.json')['sb_list']
 
 
+def sb_next_page():
+    return json_load_config('config.json')['sb_next_page'].split('.')
+
+
 def sb_name_1():
     return json_load_config('config.json')['sb_name_1']
 
