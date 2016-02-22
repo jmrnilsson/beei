@@ -11,8 +11,11 @@ def main(sys_args):
         http = HttpCache(session)
         print_line(BColours.OKGREEN, 'user-agent', requests.utils.default_user_agent())
 
-        if not ip.ok(http):
-            return 1
+        try:
+            ip.ok(http)
+        except RuntimeError as e:
+            print_line(BColours.FAIL, 'ip', unicode(e.message))
+            sys.exit(0)
 
         for i in xrange(1, 38):
             response, next_page = sb.find_all_by_page(http, i)
