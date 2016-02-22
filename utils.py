@@ -10,6 +10,18 @@ def json_load_config(name):
         return json.load(file)
 
 
+def print_line(colour, command, msg):
+    print >> sys.stdout, (colour + command + ': ').ljust(14, ' ') + BColours.ENDC + unicode(msg)
+
+
+'''
+class Config:
+    def __init__(self):
+        config = json_load_config('config.json')
+        self.sb_url = config['url_sb']
+        self.sb_url = config['url_sb']
+'''
+
 def sb_url():
     return json_load_config('config.json')['url_sb']
 
@@ -34,12 +46,12 @@ def sb_name_1():
     return json_load_config('config.json')['sb_name_1']
 
 
-def url_invalid_ip_address():
-    return json_load_config('config.json')['url_invalid_ip']
+def ip_url_void_list():
+    return json_load_config('config.json')['ip_url_void_list']
 
 
-def url_check_ip():
-    return json_load_config('config.json')['url_check_ip']
+def ip_url_check():
+    return json_load_config('config.json')['ip_url_check']
 
 
 def brewery_db_api_key():
@@ -55,7 +67,3 @@ class BColours:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
-
-
-def print_line(colour, command, msg):
-    print >> sys.stdout, (colour + command + ': ').ljust(14, ' ') + BColours.ENDC + unicode(msg)

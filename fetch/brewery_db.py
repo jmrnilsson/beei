@@ -1,4 +1,3 @@
-import sys
 from utils import brewery_db_api_key, BColours, print_line
 
 

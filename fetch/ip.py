@@ -1,7 +1,7 @@
 import sys
 from datetime import datetime
 import re
-from utils import url_invalid_ip_address, url_check_ip, BColours, print_line
+from utils import ip_url_void_list, ip_url_check, BColours, print_line
 
 
 def check(session):
@@ -13,7 +13,7 @@ def check(session):
             'utc_datetime': str(datetime.utcnow())
         }
 
-    return session.get(0, url_check_ip(), map_to=map_ip)
+    return session.get(0, ip_url_check(), map_to=map_ip)
 
 
 def _find_all_void(session):
@@ -31,7 +31,7 @@ def _find_all_void(session):
             'owner': owner
         }
 
-    return session.get(150, url_invalid_ip_address(), map_to=map_ip_ranges)
+    return session.get(150, ip_url_void_list(), map_to=map_ip_ranges)
 
 
 def ok(session):
