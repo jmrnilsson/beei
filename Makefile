@@ -43,3 +43,14 @@ test-unit: setup
 test-integration: setup
 	@ echo "Running integration tests"
 	@ . venv/bin/activate; nosetests test/integration
+
+
+######################################################
+## Running
+######################################################
+
+.PHONY: run
+
+run:
+	@ echo "Running"
+	@ . venv/bin/activate; ./bee.py
