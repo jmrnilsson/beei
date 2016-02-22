@@ -14,7 +14,7 @@ def main(sys_args):
         if not ip.ok(http):
             return 1
 
-        for i in xrange(1, 37):
+        for i in xrange(1, 38):
             response, next_page = sb.find_all_by_page(http, i)
             b_list = response[sb_list()]
             print_line(BColours.OKGREEN, 'add', unicode(len(b_list)))
