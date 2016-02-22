@@ -7,7 +7,7 @@ from utils import url_invalid_ip_address, url_check_ip
 def check(session):
     def map_ip(response):
         ip = re.findall('(?:[0-9]{1,3}\.){3}[0-9]{1,3}', response.text)[0]
-        print >> sys.stdout, 'ip: ' + unicode(ip)
+        print >> sys.stdout, 'ip: '.ljust(10, ' ') + unicode(ip)
         return {
             'ip': ip,
             'utc_datetime': str(datetime.utcnow())
@@ -38,7 +38,7 @@ def ok(session):
     def zfill(ip_address):
         return '.'.join([number.zfill(3) for number in ip_address.split('.')])
 
-    ip = check(session)
+    ip = check(session)['ip']
     ip_zfill = zfill(ip)
     for ip_range in _find_all_void(session):
         if zfill(ip_range['start']) < ip_zfill < zfill(ip_range['end']):
