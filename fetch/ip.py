@@ -1,23 +1,22 @@
 import sys
 from datetime import datetime
 import re
-from http_cache import HttpCache
 from utils import url_invalid_ip_address, url_check_ip
 
 
-def check():
+def check(session):
     def map_ip(response):
         ip = re.findall('(?:[0-9]{1,3}\.){3}[0-9]{1,3}', response.text)[0]
-        print >> sys.stdout, 'ip: ' + unicode(ip)
+        print >> sys.stdout, 'ip: '.ljust(10, ' ') + unicode(ip)
         return {
             'ip': ip,
             'utc_datetime': str(datetime.utcnow())
         }
 
-    return HttpCache(0, map_to=map_ip).get(url_check_ip())['ip']
+    return session.get(0, url_check_ip(), map_to=map_ip)
 
 
-def find_all_void():
+def _find_all_void(session):
     def map_ip_ranges(response):
         return [to_ip_range(l) for l in response.text.splitlines() if len(l) > 10]
 
@@ -32,16 +31,16 @@ def find_all_void():
             'owner': owner
         }
 
-    return HttpCache(150, map_to=map_ip_ranges).get(url_invalid_ip_address())
+    return session.get(150, url_invalid_ip_address(), map_to=map_ip_ranges)
 
 
-def ok():
+def ok(session):
     def zfill(ip_address):
         return '.'.join([number.zfill(3) for number in ip_address.split('.')])
 
-    ip = check()
+    ip = check(session)['ip']
     ip_zfill = zfill(ip)
-    for ip_range in find_all_void():
+    for ip_range in _find_all_void(session):
         if zfill(ip_range['start']) < ip_zfill < zfill(ip_range['end']):
             raise RuntimeError('Found ip ({}) in {}'.format(ip, ip_range['owner']))
 
