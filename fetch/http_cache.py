@@ -1,4 +1,3 @@
-import requests
 import hashlib
 import urllib
 import json
@@ -6,7 +5,7 @@ import os.path
 from datetime import datetime, timedelta
 import re
 import sys
-
+from utils import BColours, print_line
 
 class HttpCache:
     def __init__(self, session):
@@ -25,14 +24,14 @@ class HttpCache:
             renewal = modified + timedelta(days=cache_days)
             if datetime.now() < renewal:
                 with open(filename, 'r') as file:
-                    print >> sys.stdout, 'cached: '.ljust(10, ' ') + self._short_name(filename)
+                    print_line(BColours.OKGREEN, 'cached', self._short_name(filename))
                     return json.load(file)
 
         response = self.session.get(url, params=params)
         response.raise_for_status()
 
         with open(filename, 'w') as file:
-            print >> sys.stdout, 'get: '.ljust(10, ' ') + self._short_name(filename)
+            print_line(BColours.WARNING, 'get', self._short_name(filename))
             result = map_to(response)
             file.truncate()
             file.write(json.dumps(result, indent=2))

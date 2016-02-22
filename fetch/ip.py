@@ -1,13 +1,13 @@
 import sys
 from datetime import datetime
 import re
-from utils import url_invalid_ip_address, url_check_ip
+from utils import url_invalid_ip_address, url_check_ip, BColours, print_line
 
 
 def check(session):
     def map_ip(response):
         ip = re.findall('(?:[0-9]{1,3}\.){3}[0-9]{1,3}', response.text)[0]
-        print >> sys.stdout, 'ip: '.ljust(10, ' ') + unicode(ip)
+        print_line(BColours.OKGREEN, 'ip', ip)
         return {
             'ip': ip,
             'utc_datetime': str(datetime.utcnow())
