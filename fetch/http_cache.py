@@ -12,7 +12,7 @@ class HttpCache:
     def __init__(self, session):
         self.session = session
 
-    def get(self, url, cache_days, map_to=_map_json, params=None):
+    def get(self, cache_days, url, params=None, map_to=lambda r: r.json()):
         url_params = url if not params else url + '?' + urllib.urlencode(params)
         site_hash = hashlib.sha1(url_params).hexdigest()
         url_words = re.findall('[0-9A-Za-z]{3,}', url)
@@ -38,7 +38,3 @@ class HttpCache:
             storage.write(json.dumps(result, indent=2))
 
         return result
-
-
-def _map_json(response):
-    return response.json()

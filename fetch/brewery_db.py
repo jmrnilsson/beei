@@ -11,4 +11,4 @@ def find_by_name(session, name):
 
 def _get(session, url, params={}):
     params.update({'key': brewery_db_api_key(), 'format': 'json'})
-    return session.get(3, url, params)
+    return session.get(3, url, params=params)

@@ -4,18 +4,7 @@ import re
 from utils import url_invalid_ip_address, url_check_ip
 
 
-class IP:
-    def __init__(self, session):
-        self.session = session
-
-    def ok(self):
-        return _ok(self.session)
-
-    def check(self):
-        return _ok(self.session)
-
-
-def _check(session):
+def check(session):
     def map_ip(response):
         ip = re.findall('(?:[0-9]{1,3}\.){3}[0-9]{1,3}', response.text)[0]
         print >> sys.stdout, 'ip: ' + unicode(ip)
@@ -24,8 +13,7 @@ def _check(session):
             'utc_datetime': str(datetime.utcnow())
         }
 
-    return session.get(url_check_ip(), 0, map_to=map_ip)
-    # return HttpCache(0, map_to=map_ip).get(url_check_ip())['ip']
+    return session.get(0, url_check_ip(), map_to=map_ip)
 
 
 def _find_all_void(session):
@@ -43,15 +31,14 @@ def _find_all_void(session):
             'owner': owner
         }
 
-    return session.get(url_invalid_ip_address(), 150, map_to=map_ip_ranges)
-    # return HttpCache(150, map_to=map_ip_ranges).get(url_invalid_ip_address())
+    return session.get(150, url_invalid_ip_address(), map_to=map_ip_ranges)
 
 
-def _ok(session):
+def ok(session):
     def zfill(ip_address):
         return '.'.join([number.zfill(3) for number in ip_address.split('.')])
 
-    ip = _check(session)
+    ip = check(session)
     ip_zfill = zfill(ip)
     for ip_range in _find_all_void(session):
         if zfill(ip_range['start']) < ip_zfill < zfill(ip_range['end']):
