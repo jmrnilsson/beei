@@ -1,19 +1,20 @@
 import os
-# import inspect
 import json
-# import bee
 
 
 def json_load_config(name):
-    # path = os.path.dirname(os.path.abspath(inspect.getfile(bee)))
     path = os.path.dirname(os.path.abspath(__file__))
-    response_file = os.path.dirname(path + '/config/') + '/' + name
-    with open(response_file) as response:
-        return json.load(response)
+    filename = os.path.dirname(path + '/config/') + '/' + name
+    with open(filename) as file:
+        return json.load(file)
 
 
-def url_sb():
+def sb_url():
     return json_load_config('config.json')['url_sb']
+
+
+def sb_url_robots():
+    return json_load_config('config.json')['url_sb_robots']
 
 
 def sb_name_0():
