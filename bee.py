@@ -17,22 +17,24 @@ def main(sys_args):
             print_line(BColours.FAIL, 'ip', unicode(e.message))
             sys.exit(0)
 
-        for i in xrange(1, 38):
+        for i in xrange(1, 40):
             response, next_page = sb.find_all_by_page(http, i)
             b_list = response[sb_list()]
             print_line(BColours.OKGREEN, 'add', unicode(len(b_list)))
             for b in b_list:
-                name_0 = b.get(sb_name_0())
-                name_1 = b.get(sb_name_1())
-                if name_0:
-                    brewery_db.find_by_name(http, name_0)
-                if name_1:
-                    brewery_db.find_by_name(http, name_1)
+                find_all_by_name(http, b.get(sb_name_0()), b.get(sb_name_1()))
                 if not next_page:
                     break
 
         return 0
 
+
+def find_all_by_name(http, *args):
+    for name in args:
+        if name is None:
+            continue
+        print_line(BColours.OKGREEN, 'name', name)
+        brewery_db.find_by_name(http, name)
 
 if __name__ == "__main__":
     main(sys.argv[1:])
