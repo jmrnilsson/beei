@@ -1,5 +1,5 @@
 import robotparser
-from utils import sb_url, sb_url_robots, sb_next_page
+from utils import sb_url, sb_robots, sb_next_page
 
 
 def find_all_by_page(session, page):
@@ -11,7 +11,7 @@ def find_all_by_page(session, page):
 
 
 def _robot_can_fetch(session, url):
-    robots_text = session.get(5, sb_url_robots(), map_to=lambda r: r.text)
+    robots_text = session.get(5, sb_robots(), map_to=lambda r: r.text)
     rp = robotparser.RobotFileParser()
     rp.parse(robots_text)
     if not rp.can_fetch('*', url):

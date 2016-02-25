@@ -14,20 +14,12 @@ def print_line(colour, command, msg):
     print >> sys.stdout, (colour + command + ': ').ljust(14, ' ') + BColours.ENDC + unicode(msg)
 
 
-'''
-class Config:
-    def __init__(self):
-        config = json_load_config('config.json')
-        self.sb_url = config['url_sb']
-        self.sb_url = config['url_sb']
-'''
-
 def sb_url():
-    return json_load_config('config.json')['url_sb']
+    return json_load_config('config.json')['sb_url']
 
 
-def sb_url_robots():
-    return json_load_config('config.json')['url_sb_robots']
+def sb_robots():
+    return json_load_config('config.json')['sb_robots']
 
 
 def sb_name_0():
@@ -56,6 +48,15 @@ def ip_url_check():
 
 def brewery_db_api_key():
     return json_load_config('config.json')['brewery_db_api_key']
+
+
+
+def rb_url():
+    return json_load_config('config.json')['rb_url']
+
+
+def rb_robots():
+    return json_load_config('config.json')['rb_robots']
 
 
 class BColours:

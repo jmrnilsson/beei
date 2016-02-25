@@ -2,7 +2,7 @@
 import sys
 import requests
 from fetch.http_cache import HttpCache
-from fetch import brewery_db, sb, ip
+from fetch import brewery_db, sb, ip, rb
 from utils import sb_name_0, sb_name_1, sb_list, print_line, BColours
 
 
@@ -16,6 +16,8 @@ def main(sys_args):
         except RuntimeError as e:
             print_line(BColours.FAIL, 'ip', unicode(e.message))
             sys.exit(0)
+
+        rb.index(http)
 
         for i in xrange(1, 40):
             response, next_page = sb.find_all_by_page(http, i)
@@ -31,10 +33,11 @@ def main(sys_args):
 
 def find_all_by_name(http, *args):
     for name in args:
-        if name is None:
+        if name in (None, ''):
             continue
         print_line(BColours.OKGREEN, 'name', name)
         brewery_db.find_by_name(http, name)
+
 
 if __name__ == "__main__":
     main(sys.argv[1:])
