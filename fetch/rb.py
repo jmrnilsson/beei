@@ -26,7 +26,7 @@ def index(session):
 
         return styles
 
-    session.visit(0, url, fetch)
+    session.visit(3, url, fetch)
 
 
 def _robot_can_fetch(session, url):
