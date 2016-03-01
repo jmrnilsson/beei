@@ -1,12 +1,12 @@
 from utils import config
 
 
-def find_by_id(session, id):
-    return _get(session, 'https://api.brewerydb.com/v2/beer/{id}'.format(id=id.encode('utf-8')))
+def find_by_id(s, beer_id):
+    return _get(s, 'https://api.brewerydb.com/v2/beer/{id}'.format(id=beer_id.encode('utf-8')))
 
 
-def find_by_name(session, name):
-    return _get(session, 'https://api.brewerydb.com/v2/beers/', {'name': name.encode('utf-8')})
+def find_by_name(s, beer_name):
+    return _get(s, 'https://api.brewerydb.com/v2/beers/', {'name': beer_name.encode('utf-8')})
 
 
 def _get(session, url, params={}):
