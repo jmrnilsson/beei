@@ -14,51 +14,6 @@ def print_line(colour, command, msg):
     print >> sys.stdout, (colour + command + ': ').ljust(14, ' ') + BColours.ENDC + unicode(msg)
 
 
-def sb_url():
-    return json_load_config('config.json')['sb_url']
-
-
-def sb_robots():
-    return json_load_config('config.json')['sb_robots']
-
-
-def sb_name_0():
-    return json_load_config('config.json')['sb_name_0']
-
-
-def sb_list():
-    return json_load_config('config.json')['sb_list']
-
-
-def sb_next_page():
-    return json_load_config('config.json')['sb_next_page'].split('.')
-
-
-def sb_name_1():
-    return json_load_config('config.json')['sb_name_1']
-
-
-def ip_url_void_list():
-    return json_load_config('config.json')['ip_url_void_list']
-
-
-def ip_url_check():
-    return json_load_config('config.json')['ip_url_check']
-
-
-def brewery_db_api_key():
-    return json_load_config('config.json')['brewery_db_api_key']
-
-
-
-def rb_url():
-    return json_load_config('config.json')['rb_url']
-
-
-def rb_robots():
-    return json_load_config('config.json')['rb_robots']
-
-
 class BColours:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -68,3 +23,44 @@ class BColours:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
+
+
+class Config:
+    def __init__(self):
+        self.config = json_load_config('config.json')
+
+    def sb_url(self):
+        return self.config['sb_url']
+
+    def sb_robots(self):
+        return self.config['sb_robots']
+
+    def sb_list(self):
+        return self.config['sb_list']
+
+    def sb_next_page(self):
+        return self.config['sb_next_page'].split('.')
+
+    def sb_name_0(self):
+        return self.config['sb_name_0']
+
+    def sb_name_1(self):
+        return self.config['sb_name_1']
+
+    def ip_url_void_list(self):
+        return self.config['ip_url_void_list']
+
+    def ip_url_check(self):
+        return self.config['ip_url_check']
+
+    def brewery_db_api_key(self):
+        return self.config['brewery_db_api_key']
+
+    def rb_url(self):
+        return self.config['rb_url']
+
+    def rb_robots(self):
+        return self.config['rb_robots']
+
+
+config = Config()
