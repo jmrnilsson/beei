@@ -1,12 +1,11 @@
 import robotparser
-from utils import rb_url, rb_robots
+from utils import config
 from splinter import Browser
-
 # http://stackoverflow.com/questions/17380869/get-list-items-inside-div-tag-using-xpath
 
 
 def index(session):
-    url = rb_url()
+    url = config.rb_url()
     _robot_can_fetch(session, url)
 
     def fetch():
@@ -30,7 +29,7 @@ def index(session):
 
 
 def _robot_can_fetch(session, url):
-    robots_text = session.get(5, rb_robots(), map_to=lambda r: r.text)
+    robots_text = session.get(5, config.rb_robots(), map_to=lambda r: r.text)
     rp = robotparser.RobotFileParser()
     rp.parse(robots_text)
     if not rp.can_fetch('*', url):

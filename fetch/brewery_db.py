@@ -1,4 +1,4 @@
-from utils import brewery_db_api_key, BColours, print_line
+from utils import config
 
 
 def find_by_id(session, id):
@@ -10,5 +10,5 @@ def find_by_name(session, name):
 
 
 def _get(session, url, params={}):
-    params.update({'key': brewery_db_api_key(), 'format': 'json'})
-    return session.get(3, url, params=params)
+    params.update({'key': config.brewery_db_api_key(), 'format': 'json'})
+    return session.get(30, url, params=params)
