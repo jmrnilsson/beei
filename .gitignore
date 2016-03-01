@@ -4,3 +4,4 @@ config/
 .vscode/
 .idea/
 logs/
+ghostdriver.log

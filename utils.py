@@ -62,5 +62,8 @@ class Config:
     def rb_robots(self):
         return self.config['rb_robots']
 
+    def browser_kwargs(self):
+        return self.config['browser_kwargs']
+
 
 config = Config()

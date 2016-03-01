@@ -9,7 +9,7 @@ def index(session):
     _robot_can_fetch(session, url)
 
     def fetch():
-        with Browser(driver_name='firefox') as browser:
+        with Browser(**config.browser_kwargs()) as browser:
             browser.visit(url)
             styles = []
             group_names = browser.find_by_css('.groupname')
@@ -25,7 +25,7 @@ def index(session):
 
         return styles
 
-    session.visit(3, url, fetch)
+    session.visit(0, url, fetch)
 
 
 def _robot_can_fetch(session, url):
