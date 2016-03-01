@@ -12,16 +12,13 @@ def index(session):
         with Browser(**config.browser_kwargs()) as browser:
             browser.visit(url)
             styles = []
-            group_names = browser.find_by_css('.groupname')
+            group_expr = "//*[contains(@class, 'groupname')]"
+            group_names = browser.find_by_xpath(group_expr)
             for group_name in group_names:
-                group = None
-                xpath_expression = "../ul/li/a | ../*[contains(@class, 'groupname')]"
-                elements = group_name.find_by_xpath(xpath_expression)
+                style_group_expr = "following-sibling::ul[1]/li/a"
+                elements = group_name.find_by_xpath(style_group_expr)
                 for el in elements:
-                    if el.tag_name == 'a':
-                        styles.append({'group': group, 'name': el.text, 'href': el['href']})
-                    else:
-                        group = el.text
+                    styles.append({'group': group_name.text, 'name': el.text, 'href': el['href']})
 
         return styles
 
