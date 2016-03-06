@@ -1,7 +1,6 @@
 import robotparser
 from utils import config
 from splinter import Browser
-# http://stackoverflow.com/questions/17380869/get-list-items-inside-div-tag-using-xpath
 
 
 def index(session):

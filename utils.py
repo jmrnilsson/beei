@@ -25,7 +25,7 @@ class BColours:
     UNDERLINE = '\033[4m'
 
 
-class Config:
+class Config(object):
     def __init__(self):
         self.config = json_load_config('config.json')
 
