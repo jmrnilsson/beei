@@ -5,4 +5,5 @@ config/
 .idea/
 logs/
 **/*.log
-ghostdriver.logghostdriver.log
+*.log
+ghostdriver.log
