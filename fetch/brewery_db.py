@@ -1,4 +1,4 @@
-from utils import config
+from utils.config import BREWERY_DB_API_KEY
 
 
 def find_by_id(s, beer_id):
@@ -10,5 +10,5 @@ def find_by_name(s, beer_name):
 
 
 def _get(session, url, params={}):
-    params.update({'key': config.brewery_db_api_key(), 'format': 'json'})
+    params.update({'key': BREWERY_DB_API_KEY, 'format': 'json'})
     return session.get(30, url, params=params)

@@ -1,17 +1,17 @@
 import robotparser
-from utils import config
+from utils.config import SB_URL, SB_URL_ROBOTS, SB_SELECTORS_NEXT_PAGE
 
 
 def find_all_by_page(session, page):
-    url = config.sb_url().format(page=page).encode('utf-8')
+    url = SB_URL.format(page=page).encode('utf-8')
     _robot_can_fetch(session, url)
     response = session.get(30, url)
-    next_page_selector0, next_page_selector1 = config.sb_next_page()
-    return response, response[next_page_selector0][next_page_selector1]
+    sel_0, sel_1 = SB_SELECTORS_NEXT_PAGE
+    return response, response[sel_0][sel_1]
 
 
 def _robot_can_fetch(session, url):
-    robots_text = session.get(5, config.sb_robots(), map_to=lambda r: r.text)
+    robots_text = session.get(5, SB_URL_ROBOTS, map_to=lambda r: r.text)
     rp = robotparser.RobotFileParser()
     rp.parse(robots_text)
     if not rp.can_fetch('*', url):

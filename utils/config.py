@@ -3,44 +3,30 @@ import sys
 import json
 
 
-def json_load_config(name):
-    filename = os.path.dirname(os.path.abspath(__file__)) + '/' + name
+def __load():
+    filename = os.path.dirname(os.path.abspath(__file__)) + '/../config.json'
     with open(filename) as file:
         return json.load(file)
 
+__config = __load()
 
-def _print_line(colour, command, message, hash):
-    msg = (colour + command + ': ').ljust(14, ' ') + _colors.ENDC
-    if hash:
-        msg += unicode(message).ljust(50) + unicode(hash)
-    else:
-        msg += unicode(message)
-    print >> sys.stdout, msg
+SB_URL = __config['sb_url']
+SB_URL_ROBOTS = __config['sb_robots']
+SB_SELECTOR_LIST = __config['sb_list']
+SB_SELECTORS_NEXT_PAGE = __config['sb_next_page'].split('.')
+SB_SELECTORS_NAME = __config['sb_name'].split(';')
 
+IP_URL_LIST_BANNED_IP_RANGES = __config['ip_url_void_list']
+IP_URL_CHECK_IP = __config['ip_url_check']
 
-def info(command, message, hash=None):
-    _print_line(_colors.OKGREEN, command, message, hash)
+BREWERY_DB_API_KEY = __config['brewery_db_api_key']
 
+RB_URL = __config['rb_url']
+RB_URL_ROBOTS = __config['rb_robots']
 
-def warn(command, message, hash=None):
-    _print_line(_colors.WARNING, command, message, hash)
+BROWSER_KWARGS = __config['browser_kwargs']
 
-
-def err(command, message):
-    _print_line(_colors.FAIL, command, message)
-
-
-class _colors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-
-
+'''
 class Config(object):
     def __init__(self):
         filename = os.path.dirname(os.path.abspath(__file__)) + '/config.json'
@@ -85,3 +71,4 @@ class Config(object):
 
 
 config = Config()
+'''

@@ -1,13 +1,13 @@
 import requests
 from fetch.http_cache import HttpCache
 from nose.tools import assert_raises, assert_is_not_none
-from fetch.ip import *
+from fetch.ip import _get
 
 
 def test_check():
     with requests.session() as session:
         http = HttpCache(session)
-        actual = check(http)['ip']
+        actual = _get(http)['ip']
         assert_is_not_none(int(actual[:1]))
 
 

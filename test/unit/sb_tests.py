@@ -5,7 +5,7 @@ from utils import json_load_config
 from fetch import sb as client
 
 
-def test_find_all_by_page():
+def _test_find_all_by_page():
     with patch.object(HttpCache, 'get', return_value=json_load_config('response_sb.json')):
         actual, _ = client.find_all_by_page(HttpCache(None), 1)
         product_number = actual['ProductSearchResults'][0]['ProductNumber']

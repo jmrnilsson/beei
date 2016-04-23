@@ -1,14 +1,17 @@
 import hashlib
 import urllib
 import json
-import os.path
+import os
 from datetime import datetime, timedelta
+from random import randint
+import time
 import re
-from utils import warn, info
+from utils import stdout_logger as logger
 
 class HttpCache:
     def __init__(self, session):
         self.session = session
+        self.throttle_lock = {}
 
     def _cache(self, cache_days, fetch, url, params=None):
         url_params = url if not params else url + '?' + urllib.urlencode(params)
@@ -23,13 +26,21 @@ class HttpCache:
             renewal = modified + timedelta(days=cache_days)
             if datetime.now() < renewal:
                 with open(filename, 'r') as file:
-                    info('cached', *self._short_name(filename))
+                    logger.info('cached', *self._short_name(filename))
                     return json.load(file)
 
+        throttle_lock_time = datetime.utcnow()
+        if self.throttle_lock.get(site):
+            throttle_lock_time = self.throttle_lock.pop(site) + timedelta(seconds=3 + randint(0, 15))
+
+        while (datetime.utcnow() < throttle_lock_time):
+            time.sleep(1)
+
+        self.throttle_lock[site] = datetime.utcnow()
         result = fetch()
 
         with open(filename, 'w') as file:
-            warn('get', *self._short_name(filename))
+            logger.warn('get', *self._short_name(filename))
             file.truncate()
             file.write(json.dumps(result, indent=2))
 
