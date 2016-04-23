@@ -4,8 +4,7 @@ import json
 
 
 def json_load_config(name):
-    path = os.path.dirname(os.path.abspath(__file__))
-    filename = os.path.dirname(path + '/config/') + '/' + name
+    filename = os.path.dirname(os.path.abspath(__file__)) + '/' + name
     with open(filename) as file:
         return json.load(file)
 
@@ -27,7 +26,9 @@ class BColours:
 
 class Config(object):
     def __init__(self):
-        self.config = json_load_config('config.json')
+        filename = os.path.dirname(os.path.abspath(__file__)) + '/config.json'
+        with open(filename) as file:
+            self.config = json.load(file)
 
     def sb_url(self):
         return self.config['sb_url']

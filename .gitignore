@@ -7,3 +7,5 @@ logs/
 **/*.log
 *.log
 ghostdriver.log
+config.json
+./config.json
