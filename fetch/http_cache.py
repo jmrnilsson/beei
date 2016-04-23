@@ -4,7 +4,7 @@ import json
 import os.path
 from datetime import datetime, timedelta
 import re
-from utils import BColours, print_line
+from utils import warn, info
 
 class HttpCache:
     def __init__(self, session):
@@ -23,13 +23,13 @@ class HttpCache:
             renewal = modified + timedelta(days=cache_days)
             if datetime.now() < renewal:
                 with open(filename, 'r') as file:
-                    print_line(BColours.OKGREEN, 'cached', self._short_name(filename))
+                    info('cached', *self._short_name(filename))
                     return json.load(file)
 
         result = fetch()
 
         with open(filename, 'w') as file:
-            print_line(BColours.WARNING, 'get', self._short_name(filename))
+            warn('get', *self._short_name(filename))
             file.truncate()
             file.write(json.dumps(result, indent=2))
 
@@ -37,7 +37,8 @@ class HttpCache:
 
     @staticmethod
     def _short_name(filename):
-        return re.findall(r'(?<=\/)\w{3,}\-\w{3,}(?=\.json)', filename)[0]
+        # too lazy to split regex for now
+        return re.findall(r'(?<=\/)\w{3,}\-\w{3,}(?=\.json)', filename)[0].split('-')
 
     def get(self, cache_days, url, params=None, map_to=lambda r: r.json()):
         def fetch():

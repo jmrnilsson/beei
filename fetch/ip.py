@@ -1,12 +1,12 @@
 from datetime import datetime
 import re
-from utils import config, BColours, print_line
+from utils import config, info
 
 
 def check(session):
     def map_ip(response):
         ip = re.findall('(?:[0-9]{1,3}\.){3}[0-9]{1,3}', response.text)[0]
-        print_line(BColours.OKGREEN, 'ip', ip)
+        info('ip', ip)
         return {
             'ip': ip,
             'utc_datetime': str(datetime.utcnow())

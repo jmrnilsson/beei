@@ -9,11 +9,28 @@ def json_load_config(name):
         return json.load(file)
 
 
-def print_line(colour, command, msg):
-    print >> sys.stdout, (colour + command + ': ').ljust(14, ' ') + BColours.ENDC + unicode(msg)
+def _print_line(colour, command, message, hash):
+    msg = (colour + command + ': ').ljust(14, ' ') + _colors.ENDC
+    if hash:
+        msg += unicode(message).ljust(50) + unicode(hash)
+    else:
+        msg += unicode(message)
+    print >> sys.stdout, msg
 
 
-class BColours:
+def info(command, message, hash=None):
+    _print_line(_colors.OKGREEN, command, message, hash)
+
+
+def warn(command, message, hash=None):
+    _print_line(_colors.WARNING, command, message, hash)
+
+
+def err(command, message):
+    _print_line(_colors.FAIL, command, message)
+
+
+class _colors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
     OKGREEN = '\033[92m'
