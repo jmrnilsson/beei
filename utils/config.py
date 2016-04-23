@@ -15,8 +15,8 @@ SB_SELECTOR_LIST = __config['sb_list']
 SB_SELECTORS_NEXT_PAGE = __config['sb_next_page'].split('.')
 SB_SELECTORS_NAME = __config['sb_name'].split(';')
 
-IP_URL_LIST_BANNED_IP_RANGES = __config['ip_url_void_list']
-IP_URL_CHECK_IP = __config['ip_url_check']
+IP_URL_LIST_BLOCKED = __config['ip_url_void_list']
+IP_URL_CHECK = __config['ip_url_check']
 
 BREWERY_DB_API_KEY = __config['brewery_db_api_key']
 

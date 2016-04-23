@@ -1,7 +1,7 @@
 from datetime import datetime
 import re
 from utils import stdout_logger as logger
-from utils.config import IP_URL_CHECK_IP, IP_URL_LIST_BANNED_IP_RANGES
+from utils.config import IP_URL_CHECK, IP_URL_LIST_BLOCKED
 
 
 def _get(session):
@@ -12,7 +12,7 @@ def _get(session):
             'ip': ip,
             'utc_datetime': str(datetime.utcnow())
         }
-    return session.get(0, IP_URL_CHECK_IP, map_to=map_ip)
+    return session.get(0, IP_URL_CHECK, map_to=map_ip)
 
 
 def _find_all_void(session):
@@ -26,7 +26,7 @@ def _find_all_void(session):
                 'owner': owner
             }
         return [to_ip_range(l) for l in response.text.splitlines() if len(l) > 10]
-    return session.get(1, IP_URL_LIST_BANNED_IP_RANGES, map_to=map_ip_ranges)
+    return session.get(1, IP_URL_LIST_BLOCKED, map_to=map_ip_ranges)
 
 
 def _zfill(ip_address):

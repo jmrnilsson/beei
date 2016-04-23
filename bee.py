@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import sys
 import requests
+from datetime import datetime
 from fetch.http_cache import HttpCache
 from fetch import brewery_db, sb, ip, rb
 from utils import stdout_logger as logger
@@ -8,6 +9,7 @@ from utils.config import SB_SELECTOR_LIST, SB_SELECTORS_NAME
 
 
 def main(sys_args):
+    start_time = datetime.utcnow()
     with requests.session() as session:
         http = HttpCache(session)
         logger.info('user-agent', requests.utils.default_user_agent())
@@ -31,7 +33,7 @@ def main(sys_args):
                 if not next_page:
                     break
                 '''
-
+        logger.info('time', str((datetime.utcnow() - start_time).total_seconds()) + 's')
         return 0
 
 
