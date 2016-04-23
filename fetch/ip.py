@@ -34,7 +34,8 @@ def _zfill(ip_address):
 
 
 def ok(session):
-    zfill_ip = _zfill(_get(session)['ip'])
+    ip = _get(session)['ip']
+    zfill_ip = _zfill(ip)
     for ip_range in _find_all_void(session):
         if _zfill(ip_range['start']) < zfill_ip < _zfill(ip_range['end']):
             raise RuntimeError('Found ip ({}) in {}'.format(ip, ip_range['owner']))

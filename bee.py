@@ -21,7 +21,7 @@ def main(sys_args):
         rb.index(http)
         name_sel_0, name_sel_1 = SB_SELECTORS_NAME
 
-        for i in xrange(1, 35):
+        for i in xrange(1, 43):
             response, next_page = sb.find_all_by_page(http, i)
             sb_list = response[SB_SELECTOR_LIST]
             logger.info('add', unicode(len(sb_list)) + ' more records')

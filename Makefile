@@ -55,4 +55,5 @@ test-integration: setup
 
 run:
 	@ echo "Running"
+	@ . venv/bin/activate; flake8 --max-line-length=100 ./bee.py fetch utils
 	@ . venv/bin/activate; ./bee.py

@@ -8,6 +8,7 @@ import time
 import re
 from utils import stdout_logger as logger
 
+
 class HttpCache:
     def __init__(self, session):
         self.session = session
@@ -21,6 +22,7 @@ class HttpCache:
         path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/logs/'
         filename = path + '{}-{}.json'.format(site, site_hash)
 
+        # forward proxy
         if os.path.isfile(filename):
             modified = datetime.fromtimestamp(os.path.getmtime(filename))
             renewal = modified + timedelta(days=cache_days)
@@ -29,16 +31,16 @@ class HttpCache:
                     logger.info('cached', *self._short_name(filename))
                     return json.load(file)
 
-        throttle_lock_time = datetime.utcnow()
+        # throttle lock
         if self.throttle_lock.get(site):
-            throttle_lock_time = self.throttle_lock.pop(site) + timedelta(seconds=3 + randint(0, 15))
+            total_lock_time = (datetime.utcnow() - self.throttle_lock.pop(site)).seconds
+            time.sleep(max(timedelta(seconds=3 + randint(0, 15)).seconds - total_lock_time, 0))
 
-        while (datetime.utcnow() < throttle_lock_time):
-            time.sleep(1)
-
+        # request
         self.throttle_lock[site] = datetime.utcnow()
         result = fetch()
 
+        # local store
         with open(filename, 'w') as file:
             logger.warn('get', *self._short_name(filename))
             file.truncate()
