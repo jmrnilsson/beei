@@ -1,7 +1,6 @@
 venv/
 config/
 **/*.pyc
-.vscode/
 .idea/
 logs/
 **/*.log
