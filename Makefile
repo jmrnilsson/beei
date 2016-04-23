@@ -10,9 +10,11 @@ SHELL=bash
 
 .PHONY: clean setup
 
-clean:
+clean: logs
 	rm -rf ./build
 	rm -rf ./venv
+
+logs:
 	rm -rf ./logs
 	mkdir ./logs
 
