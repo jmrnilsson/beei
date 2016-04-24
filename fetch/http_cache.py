@@ -42,7 +42,6 @@ class HttpCache:
 
         # rate lock
         if self.rate_lock.get(site):
-            logger.err('rate', 'limited access')
             return None
 
         # avoid throttling
@@ -74,6 +73,7 @@ class HttpCache:
             response.raise_for_status()
             if int(response.headers.get('X-Ratelimit-Remaining', 101)) < 100:
                 self.rate_lock[self._site(url)] = True
+                logger.err('rate-limit', 'restricting access')
             return map_to(response)
         return self._cache(cache_days, fetch, url, params=params)
 

@@ -6,6 +6,8 @@ def index(session):
         styles = []
         group_names = browser.find_by_xpath("//*[contains(@class, 'groupname')]")
         for group_name in group_names:
+            if group_name.text.lower() == 'non-beer':
+                continue
             elements = group_name.find_by_xpath('following-sibling::ul[1]/li/a')
             for el in elements:
                 styles.append({'group': group_name.text, 'name': el.text, 'href': el['href']})
