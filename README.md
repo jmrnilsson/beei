@@ -14,10 +14,13 @@ Use `make setup`, `make run` and `make test-integration`
 Once data fetched querying is possible with e.g. `grep` and `jq`.
 
 
-    # Find all product names
-    ls . | xargs cat ./logs/ | grep ProductName | awk '{print $2}' | sort | uniq
+    # Typical example, look for a beer named Bell
+    make run && cat beers.json | grep -i Bell
 
-    # Type info before and after
+    # Deep diving into the stores. Find all product names
+    ls . | xargs cat ./logs/ | grep -i name | awk '{print $2}' | sort | uniq
+
+    # Show a little before and after
     ls . | xargs cat ./logs/ | grep -A 50 -B 50 some_brewery
 
     # Extract value with jq
@@ -26,17 +29,14 @@ Once data fetched querying is possible with e.g. `grep` and `jq`.
     # Extract values in batch
     ls -la . | grep brewerydb | awk '$5 > 46 {print "./"$9}' | xargs cat | jq '[{name: .data[].name, style: .data[].style.name, abv: .data[].abv}]'
 
-    # Check age of local storage
-    ls -la logs/ | grep rate
-
     # Sort list all unique names
     (cd logs; ls -1 . | grep rate | xargs cat | grep name | sed -e 's/    "name": "/ /g' -e 's/",/ /g' | uniq | sort)
 
     # Create a backup
     tar -zcvf ./config/2013-04-01.tar.gz ./logs
 
-    # Check any source for non-unicode characters
-    (cd logs/; ls -1 | grep 'rate\|bo' | xargs cat)
+    # Check age of local storage
+    ls -la logs/ | grep rate
 
-    # Look for a specific item
-    (cd logs/; ls -1 | xargs cat | grep 'Crystal')
+    # Check specific sources
+    (cd logs/; ls -1 | grep 'rate\|bo' | xargs cat)

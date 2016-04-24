@@ -2,6 +2,9 @@
 import sys
 import requests
 import re
+import os
+import codecs
+import json
 from datetime import datetime
 from splinter import Browser
 from fetch.http_cache import HttpCache
@@ -55,9 +58,17 @@ def main(sys_args):
                 if not next_page:
                     break
 
-        sb.index_site_map(http)
+        for site_map in sb.index_site_map(http):
+            for site in sb.get_by_site_map(http, site_map):
+                add_beer({'href': site})
+
         logger.info('duration', str((datetime.utcnow() - start_time).total_seconds()) + 's')
-        # logger.info('found', unicode(json.dumps(beer_list, indent=2, ensure_ascii=False)))
+
+        filename = os.path.dirname(os.path.abspath(__file__)) + '/beers.json'
+        with codecs.open(filename, 'w', 'utf-8') as file:
+            logger.info('write', 'to ' + filename)
+            file.truncate()
+            file.write(unicode(json.dumps(beer_list, indent=2, ensure_ascii=False)))
         return 0
 
 

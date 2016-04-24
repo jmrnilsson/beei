@@ -8,3 +8,4 @@ logs/
 ghostdriver.log
 config.json
 ./config.json
+beers.json
