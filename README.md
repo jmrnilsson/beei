@@ -28,3 +28,6 @@ Once data fetched querying is possible with e.g. `grep` and `jq`.
 
     # Check age of local storage
     ls -la logs/ | grep rate
+
+    # Sort list all unique names
+    (cd logs; ls -1 . | grep rate | xargs cat | grep name | sed -e 's/    "name": "/ /g' -e 's/",/ /g' | uniq | sort)
