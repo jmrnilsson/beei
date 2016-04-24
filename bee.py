@@ -14,8 +14,8 @@ from utils.config import SB_SELECTOR_LIST, SB_SELECTORS_NAME, BROWSER_KWARGS
 def main(sys_args):
     start_time = datetime.utcnow()
     beer_list = []
-    beer_attrs = ('abv', 'alcohol', 'name', 'style', '^volume$', '^price$', 'sellstart', 'score',
-                  'url', 'href', '^type$')
+    beer_attrs = ('abv', 'alcohol', 'name', '^volume$', '^price$', 'sellstart', 'score', 'url',
+                  'href', '^type$')
 
     def add_beer(b):
         if b and b.keys() > 0:
@@ -35,11 +35,12 @@ def main(sys_args):
             logger.err('ip', unicode(e.message))
             sys.exit(0)
 
-        for style in rb.index(http)[:15]:
+        for style in rb.index(http)[:21]:
             beers = rb.get_top_50_for_style(http, style['href'])
             for beer in beers:
                 add_beer(beer)
-                find_all_by_name(http, beer.get('name'))
+                for b in brewery_db.find_by_name(http, beer.get('name')):
+                    add_beer(b)
 
         name_0, name_1 = SB_SELECTORS_NAME
 
@@ -48,20 +49,15 @@ def main(sys_args):
             sb_list = response[SB_SELECTOR_LIST]
             for beer in sb_list:
                 add_beer(beer)
-                find_all_by_name(http, beer.get(name_0), beer.get(name_1))
+                for b in brewery_db.find_by_name(http, name_0):
+                    add_beer(b)
+                for b in brewery_db.find_by_name(http, name_1):
+                    add_beer(b)
                 if not next_page:
                     break
         logger.info('duration', str((datetime.utcnow() - start_time).total_seconds()) + 's')
         logger.info('found', unicode(json.dumps(beer_list, indent=2, ensure_ascii=False)))
         return 0
-
-
-def find_all_by_name(http, *args):
-    for name in args:
-        if name in (None, ''):
-            continue
-        logger.info('name', name[:20])
-        brewery_db.find_by_name(http, name)
 
 
 if __name__ == "__main__":
