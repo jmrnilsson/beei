@@ -2,16 +2,17 @@
 import sys
 import requests
 from datetime import datetime
+from splinter import Browser
 from fetch.http_cache import HttpCache
 from fetch import brewery_db, sb, ip, rb
 from utils import stdout_logger as logger
-from utils.config import SB_SELECTOR_LIST, SB_SELECTORS_NAME
+from utils.config import SB_SELECTOR_LIST, SB_SELECTORS_NAME, BROWSER_KWARGS
 
 
 def main(sys_args):
     start_time = datetime.utcnow()
-    with requests.session() as session:
-        http = HttpCache(session)
+    with requests.session() as session, Browser(**BROWSER_KWARGS) as browser:
+        http = HttpCache(session, browser)
         logger.info('user-agent', requests.utils.default_user_agent())
 
         try:
@@ -20,20 +21,19 @@ def main(sys_args):
             logger.err('ip', unicode(e.message))
             sys.exit(0)
 
-        rb.index(http)
+        for style in rb.index(http)[:13]:
+            beer = rb.get_top_50_for_style(http, style['href'])
+
         name_sel_0, name_sel_1 = SB_SELECTORS_NAME
 
-        for i in xrange(1, 43):
+        for i in xrange(1, 50):
             response, next_page = sb.find_all_by_page(http, i)
             sb_list = response[SB_SELECTOR_LIST]
-            logger.info('add', unicode(len(sb_list)) + ' more records')
-            for b in sb_list:
-                '''
-                find_all_by_name(http, b.get(name_sel_0), b.get(name_sel_1))
+            for beer in sb_list:
+                # find_all_by_name(http, beer.get(name_sel_0), beer.get(name_sel_1))
                 if not next_page:
                     break
-                '''
-        logger.info('time', str((datetime.utcnow() - start_time).total_seconds()) + 's')
+        logger.info('duration', str((datetime.utcnow() - start_time).total_seconds()) + 's')
         return 0
 
 

@@ -13,9 +13,9 @@ class __colors:
 
 
 def _print(colour, command, message, hash):
-    msg = (colour + command + ': ').ljust(14, ' ') + __colors.ENDC
+    msg = (colour + command + ': ').ljust(20, ' ') + __colors.ENDC
     if hash:
-        msg += unicode(message).ljust(50) + unicode(hash)
+        msg += unicode(message).ljust(25) + unicode(hash)
     else:
         msg += unicode(message)
     print >> sys.stdout, msg

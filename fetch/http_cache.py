@@ -10,27 +10,10 @@ from utils import stdout_logger as logger
 
 
 class HttpCache:
-    def __init__(self, session):
+    def __init__(self, session, browser):
         self.session = session
+        self.browser = browser
         self.throttle_lock = {}
-        self.mem_cache = {}
-        self._load_logs()
-
-    def _load_logs(self):
-        path = self._log_path()
-        for filename in os.listdir(path):
-            if filename.endswith('.json'):
-                logger.info('attempt', path + filename)
-                path_filename = path + filename
-                with open(path_filename, 'r') as file:
-                    try:
-                        content = json.load(file)
-                    except:
-                        continue
-                    self.mem_cache[self._short_name(path_filename)] = {
-                        'modified': datetime.fromtimestamp(os.path.getmtime(path_filename)),
-                        'content': content
-                    }
 
     def _log_path(self):
         return os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/logs/'
@@ -42,15 +25,7 @@ class HttpCache:
         site = next(w for w in words if w not in ('https', 'http', 'www', 'dns', 'api'))
         filename = self._log_path() + '{}-{}.json'.format(site, url_hash)
 
-        # reverse proxy mem
-        file_in_memory = self.mem_cache.get(self._short_name(filename))
-        if file_in_memory:
-            invalidation_time = file_in_memory['modified'] + timedelta(days=cache_days)
-            if datetime.now() < invalidation_time:
-                logger.info('mem cached', *self._short_name(filename).split('-'))
-                return file_in_memory['content']
-
-        # reverse proxy disk
+        # reverse proxy (web accel)
         if os.path.isfile(filename):
             modified = datetime.fromtimestamp(os.path.getmtime(filename))
             invalidation_time = modified + timedelta(days=cache_days)
@@ -62,7 +37,7 @@ class HttpCache:
         # throttle lock
         if self.throttle_lock.get(site):
             total_lock_time = (datetime.utcnow() - self.throttle_lock.pop(site)).total_seconds()
-            delay = timedelta(seconds=3 + randint(0, 15)).total_seconds()
+            delay = timedelta(seconds=3 + randint(0, 7)).total_seconds()
             time.sleep(max(delay - total_lock_time, 0))
 
         # request
@@ -88,5 +63,8 @@ class HttpCache:
             return map_to(response)
         return self._cache(cache_days, fetch, url, params=params)
 
-    def visit(self, cache_days, url, fetch):
+    def visit(self, cache_days, url, map_to=None):
+        def fetch():
+            self.browser.visit(url)
+            return map_to(self.browser)
         return self._cache(cache_days, fetch, url)
