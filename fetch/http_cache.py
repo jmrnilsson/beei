@@ -67,7 +67,7 @@ class HttpCache:
     def _short_name(filename):
         return re.findall(r'(?<=\/)\w{3,}\-\w{3,}(?=\.json)', filename)[0]
 
-    def get(self, cache_days, url, params=None, map_to=lambda r: r.json(), meta=None):
+    def get(self, cache_days, url, params=None, map_to=lambda r: r.json()):
         def fetch():
             response = self.session.get(url, params=params)
             response.raise_for_status()

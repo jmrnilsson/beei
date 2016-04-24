@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import sys
 import requests
-import json
 import re
 from datetime import datetime
 from splinter import Browser
@@ -35,7 +34,7 @@ def main(sys_args):
             logger.err('ip', unicode(e.message))
             sys.exit(0)
 
-        for style in rb.index(http)[:21]:
+        for style in rb.index_styles(http)[:21]:
             beers = rb.get_top_50_for_style(http, style['href'])
             for beer in beers:
                 add_beer(beer)
@@ -45,7 +44,7 @@ def main(sys_args):
         name_0, name_1 = SB_SELECTORS_NAME
 
         for i in xrange(1, 2):
-            response, next_page = sb.find_all_by_page(http, i)
+            response, next_page = sb.index_api_by_page(http, i)
             sb_list = response[SB_SELECTOR_LIST]
             for beer in sb_list:
                 add_beer(beer)
@@ -55,8 +54,10 @@ def main(sys_args):
                     add_beer(b)
                 if not next_page:
                     break
+
+        sb.index_site_map(http)
         logger.info('duration', str((datetime.utcnow() - start_time).total_seconds()) + 's')
-        logger.info('found', unicode(json.dumps(beer_list, indent=2, ensure_ascii=False)))
+        # logger.info('found', unicode(json.dumps(beer_list, indent=2, ensure_ascii=False)))
         return 0
 
 

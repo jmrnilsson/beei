@@ -11,6 +11,7 @@ __config = __load()
 
 SB_URL = __config['sb_url']
 SB_URL_ROBOTS = __config['sb_robots']
+SB_URL_SITE_MAP = __config['sb_url_site_map']
 SB_SELECTOR_LIST = __config['sb_list']
 SB_SELECTORS_NEXT_PAGE = __config['sb_next_page'].split('.')
 SB_SELECTORS_NAME = __config['sb_name'].split(';')
