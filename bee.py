@@ -24,7 +24,7 @@ def main(sys_args):
         for style in rb.index(http)[:7]:
             beers = rb.get_top_50_for_style(http, style['href'])
             for beer in beers:
-                # find_all_by_name(http, beer.get('name'))
+                find_all_by_name(http, beer.get('name'))
 
         name_0, name_1 = SB_SELECTORS_NAME
 

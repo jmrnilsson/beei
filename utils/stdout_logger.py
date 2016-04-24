@@ -30,7 +30,7 @@ def warn(command, message, hash=None):
 
 
 def err(command, message):
-    _print(__colors.FAIL, command, message)
+    _print(__colors.FAIL, command, message, None)
 
 
 def warning(*args, **kwargs):
