@@ -21,16 +21,16 @@ def main(sys_args):
             logger.err('ip', unicode(e.message))
             sys.exit(0)
 
-        for style in rb.index(http)[:13]:
+        for style in rb.index(http)[:6]:
             beer = rb.get_top_50_for_style(http, style['href'])
 
         name_sel_0, name_sel_1 = SB_SELECTORS_NAME
 
-        for i in xrange(1, 50):
+        for i in xrange(1, 1):
             response, next_page = sb.find_all_by_page(http, i)
             sb_list = response[SB_SELECTOR_LIST]
             for beer in sb_list:
-                # find_all_by_name(http, beer.get(name_sel_0), beer.get(name_sel_1))
+                find_all_by_name(http, beer.get(name_sel_0), beer.get(name_sel_1))
                 if not next_page:
                     break
         logger.info('duration', str((datetime.utcnow() - start_time).total_seconds()) + 's')

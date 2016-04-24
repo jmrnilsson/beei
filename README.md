@@ -31,3 +31,12 @@ Once data fetched querying is possible with e.g. `grep` and `jq`.
 
     # Sort list all unique names
     (cd logs; ls -1 . | grep rate | xargs cat | grep name | sed -e 's/    "name": "/ /g' -e 's/",/ /g' | uniq | sort)
+
+    # Create a backup
+    tar -zcvf ./config/2013-04-01.tar.gz ./logs
+
+    # Check any source for non-unicode characters
+    (cd logs/; ls -1 | grep 'rate\|bo' | xargs cat)
+
+    # Look for a specific item
+    (cd logs/; ls -1 | xargs cat | grep 'Crystal')

@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 from random import randint
 import time
 import re
+import codecs
 from utils import stdout_logger as logger
 
 
@@ -30,7 +31,7 @@ class HttpCache:
             modified = datetime.fromtimestamp(os.path.getmtime(filename))
             invalidation_time = modified + timedelta(days=cache_days)
             if datetime.now() < invalidation_time:
-                with open(filename, 'r') as file:
+                with codecs.open(filename, 'r', 'utf-8') as file:
                     logger.info('cached', *self._short_name(filename).split('-'))
                     return json.load(file)
 
@@ -38,6 +39,7 @@ class HttpCache:
         if self.throttle_lock.get(site):
             total_lock_time = (datetime.utcnow() - self.throttle_lock.pop(site)).total_seconds()
             delay = timedelta(seconds=3 + randint(0, 7)).total_seconds()
+            logger.info('delay', 'wait for ' + str(delay) + 's')
             time.sleep(max(delay - total_lock_time, 0))
 
         # request
@@ -45,10 +47,10 @@ class HttpCache:
         result = fetch()
 
         # local store
-        with open(filename, 'w') as file:
+        with codecs.open(filename, 'w', 'utf-8') as file:
             logger.warn('get', *self._short_name(filename).split('-'))
             file.truncate()
-            file.write(json.dumps(result, indent=2))
+            file.write(unicode(json.dumps(result, indent=2, ensure_ascii=False)))
 
         return result
 
