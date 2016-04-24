@@ -6,6 +6,9 @@ A shell client for fetching beer data.
 ## Licensing information
 The software licensed under MIT.
 
+## Running
+Use `make setup`, `make run` and `make test-integration`
+
 ## Querying
 
 Once data fetched querying is possible with e.g. `grep` and `jq`.
