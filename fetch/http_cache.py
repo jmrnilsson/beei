@@ -34,7 +34,7 @@ class HttpCache:
                     logger.info('cached', *self._short_name(filename).split('-'))
                     return json.load(file)
 
-        # throttle lock
+        # avoid throttling
         if self.throttle_lock.get(site):
             total_lock_time = (datetime.utcnow() - self.throttle_lock.pop(site)).total_seconds()
             delay = timedelta(seconds=3 + randint(0, 7)).total_seconds()
