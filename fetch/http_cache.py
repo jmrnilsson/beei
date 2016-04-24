@@ -7,6 +7,7 @@ from random import randint
 import time
 import re
 import codecs
+import robotparser
 from utils import stdout_logger as logger
 
 
@@ -70,3 +71,10 @@ class HttpCache:
             self.browser.visit(url)
             return map_to(self.browser)
         return self._cache(cache_days, fetch, url)
+
+    def robot_allowed(self, url, url_robot):
+        robots_text = self.get(3, url_robot, map_to=lambda r: r.text)
+        rp = robotparser.RobotFileParser()
+        rp.parse(robots_text)
+        if not rp.can_fetch('*', url):
+            raise ValueError('Robot is not allowed to fetch {}'.format(url))

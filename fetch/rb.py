@@ -1,4 +1,3 @@
-import robotparser
 from utils.config import RB_URL_ROBOTS, RB_URL
 
 
@@ -13,7 +12,7 @@ def index(session):
         return styles
 
     url = RB_URL
-    _robot_allowed(session, url)
+    session.robot_allowed(url, RB_URL_ROBOTS)
     return session.visit(3, url, map_to=map_to)
 
 
@@ -35,13 +34,5 @@ def get_top_50_for_style(session, url):
             top_50.append(beer)
         return top_50
 
-    _robot_allowed(session, url)
+    session.robot_allowed(url, RB_URL_ROBOTS)
     return session.visit(15, url, map_to=map_to)
-
-
-def _robot_allowed(session, url):
-    robots_text = session.get(5, RB_URL_ROBOTS, map_to=lambda r: r.text)
-    rp = robotparser.RobotFileParser()
-    rp.parse(robots_text)
-    if not rp.can_fetch('*', url):
-        raise ValueError('Robot is not allowed to fetch {}'.format(url))
