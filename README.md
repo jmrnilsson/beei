@@ -17,6 +17,9 @@ Once data fetched querying is possible with e.g. `grep` and `jq`.
     # Typical example, look for a beer named Bell
     make run && cat beers.json | grep -i Bell
 
+    # Open the first beer in a browser
+    cat beers.json | grep 'st-eriks' | sed -e 's/"href": "/ /g' -e 's/"/ /g' -e 's/,/ /g' | head -n 1 | xargs open
+
     # Deep diving into the stores. Find all product names
     ls . | xargs cat ./logs/ | grep -i name | awk '{print $2}' | sort | uniq
 
