@@ -8,8 +8,8 @@ from utils import stdout_logger as logger
 class BeerList:
     def __init__(self):
         self.__items = []
-        self.__attrs = ('abv', 'alcohol', 'name', '^volume$', '^price$', 'sellstart',
-                        'score', 'url', 'href', '^type$')
+        self.__include_keys = ('abv', 'alcohol', 'name', '^volume$', '^price$',  'score',
+                               'url', 'href', '^type$')
 
     def add(self, b):
         if not b or len(b.keys()) < 0:
@@ -17,7 +17,7 @@ class BeerList:
 
         self.__items.append({
             k: v for k, v in b.iteritems()
-            if any([a for a in self.__attrs if any(re.findall(a, k.lower()))])
+            if any([a for a in self.__include_keys if any(re.findall(a, k.lower()))])
         })
 
     def save(self):
