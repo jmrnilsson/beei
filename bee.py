@@ -32,9 +32,8 @@ def main(sys_args):
                     beer_list.add(b)
 
         for i in xrange(1, 10):
-            response, next_page = sb.index_api_by_page(http, i)
-            sb_list = response[SB_SELECTOR_LIST]
-            for beer in sb_list:
+            api_index, next_page = sb.index_api_by_page(http, i)
+            for beer in api_index[SB_SELECTOR_LIST]:
                 beer_list.add(beer)
                 names = [b for b in [beer[SB_SELECTORS_NAME[0]], beer[SB_SELECTORS_NAME[1]]] if b]
                 for name in names:

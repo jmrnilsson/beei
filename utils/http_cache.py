@@ -71,7 +71,7 @@ class HttpCache:
         def fetch():
             response = self.session.get(url, params=params)
             response.raise_for_status()
-            if int(response.headers.get('X-Ratelimit-Remaining', 101)) < 10:
+            if int(response.headers.get('X-Ratelimit-Remaining', 101)) < 100:
                 self.rate_lock[self._site(url)] = True
                 logger.err('rate-limit', 'restricting access')
             return map_to(response)
