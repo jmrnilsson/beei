@@ -31,21 +31,6 @@ def main(sys_args):
                 for b in brewery_db.find_by_name(http, beer.get('name')):
                     beer_list.add(b)
 
-        for i in xrange(1, 10):
-            api_index, next_page = sb.index_api_by_page(http, i)
-            for beer in api_index[SB_SELECTOR_LIST]:
-                beer_list.add(beer)
-                names = [b for b in [beer[SB_SELECTORS_NAME[0]], beer[SB_SELECTORS_NAME[1]]] if b]
-                for name in names:
-                    for b in brewery_db.find_by_name(http, name):
-                        beer_list.add(b)
-            if not next_page:
-                break
-
-        for site_map in sb.index_site_map(http):
-            for site in sb.get_by_site_map(http, site_map):
-                beer_list.add({'href': site})
-
         beer_list.save()
         logger.info('duration', str((datetime.utcnow() - start_time).total_seconds()) + 's')
         return 0
