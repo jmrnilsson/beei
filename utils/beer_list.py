@@ -10,7 +10,7 @@ class BeerList:
         self.__items = []
         self.__include_keys = ('abv', 'alcohol', 'name', '^volume$', '^price$',  'score',
                                'url', 'href', '^type$', '^fg', 'finalgravity', '^og',
-                               'originalgravity', '^srm', '^ibu', 'organic')
+                               'originalgravity', '^ibu', 'organic')
 
     def add(self, b):
         if not b or len(b.keys()) < 0:

@@ -9,6 +9,7 @@ import re
 import codecs
 import robotparser
 from utils import stdout_logger as logger
+from utils.config import USER_AGENT
 
 
 class HttpCache:
@@ -69,7 +70,8 @@ class HttpCache:
 
     def get(self, cache_days, url, params=None, map_to=lambda r: r.json()):
         def fetch():
-            response = self.session.get(url, params=params)
+            headers = {'User-Agent': USER_AGENT}
+            response = self.session.get(url, params=params, headers=headers)
             response.raise_for_status()
             if int(response.headers.get('X-Ratelimit-Remaining', 101)) < 100:
                 self.rate_lock[self._site(url)] = True

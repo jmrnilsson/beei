@@ -9,12 +9,13 @@ def __load():
 
 __config = __load()
 
+'''
 SB_URL = __config['sb_url']
-SB_URL_ROBOTS = __config['sb_robots']
 SB_URL_SITE_MAP = __config['sb_url_site_map']
 SB_SELECTOR_LIST = __config['sb_list']
 SB_SELECTORS_NEXT_PAGE = __config['sb_next_page'].split('.')
 SB_SELECTORS_NAME = __config['sb_name'].split(';')
+'''
 
 IP_URL_LIST_BLOCKED = __config['ip_url_void_list']
 IP_URL_CHECK = __config['ip_url_check']
@@ -24,4 +25,9 @@ BREWERY_DB_API_KEY = __config['brewery_db_api_key']
 RB_URL = __config['rb_url']
 RB_URL_ROBOTS = __config['rb_robots']
 
+S_URL_ROBOTS = __config['s_robots']
+S_URL_API = __config['s_url_api']
+S_API_MAP = __config['s_api_map']
+
 BROWSER_KWARGS = __config['browser_kwargs']
+USER_AGENT = __config['browser_kwargs']['user_agent']
