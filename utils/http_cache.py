@@ -48,17 +48,17 @@ class HttpCache:
         # avoid throttling
         if self.throttle_lock.get(site) and 'api.brewerydb' not in url:
             total_lock_time = (datetime.utcnow() - self.throttle_lock.pop(site)).total_seconds()
-            delay = timedelta(seconds=3 + randint(0, 7)).total_seconds()
+            delay = timedelta(seconds=3 + randint(0, 10)).total_seconds()
             logger.info('delay', 'wait for ' + str(delay) + 's')
             time.sleep(max(delay - total_lock_time, 0))
 
         # request
+        logger.warn('get', *self._short_name(filename).split('-'))
         self.throttle_lock[site] = datetime.utcnow()
         result = fetch()
 
         # local store
         with codecs.open(filename, 'w', 'utf-8') as file:
-            logger.warn('get', *self._short_name(filename).split('-'))
             file.truncate()
             file.write(unicode(json.dumps(result, indent=2, ensure_ascii=False)))
 

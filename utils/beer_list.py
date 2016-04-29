@@ -8,9 +8,11 @@ from utils import stdout_logger as logger
 class BeerList:
     def __init__(self):
         self.__items = []
-        self.__include_keys = ('abv', 'alcohol', 'name', '^volume$', '^price$',  'score',
-                               'url', 'href', '^type$', '^fg', 'finalgravity', '^og',
-                               'originalgravity', '^ibu', 'organic')
+        self.__include_keys = (
+            'abv', 'alcohol', 'name', '^volume$', '^price$',  'score', 'url', 'href', '^type$',
+            '^fg', 'finalgravity', '^og', 'originalgravity', '^ibu', 'organic', '^category$',
+            '^manufacturer$', '^supplier$', '^koscher$', '^ethical$', '^sale'
+        )
 
     def add(self, b):
         if not b or len(b.keys()) < 0:
