@@ -15,7 +15,7 @@ def index_styles(session):
 
     url = RB_URL
     session.robot_allowed(url, RB_URL_ROBOTS)
-    return session.visit(3, url, map_to=map_to)
+    return session.visit(5, url, map_to=map_to)
 
 
 def get_top_50_for_style(session, url):

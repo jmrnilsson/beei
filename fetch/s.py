@@ -19,4 +19,4 @@ def api_get_all(session):
         ]
 
     session.robot_allowed(S_URL_API, S_URL_ROBOTS)
-    return session.get(3, S_URL_API, map_to=map_to)
+    return session.get(10, S_URL_API, map_to=map_to)

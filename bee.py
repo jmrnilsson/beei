@@ -24,7 +24,9 @@ def main(sys_args):
             logger.err('ip', unicode(e.message))
             sys.exit(0)
 
-        for style in rb.index_styles(http)[:65]:
+        styles = rb.index_styles(http)
+        for i, style in enumerate(styles):  # [:65]
+            logger.info('progress', '{} of {}'.format(i, len(styles)))
             beers = rb.get_top_50_for_style(http, style['href'])
             for beer in beers:
                 beer_list.add(beer)
