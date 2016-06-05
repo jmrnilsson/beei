@@ -17,7 +17,11 @@ def main(sys_args):
             logger.info('file', file)
             loaded = json.load(file)
             filtered = filter(lambda b: b.get('sale_start'), loaded)
-            sort = sorted(filtered, key=lambda b: datetime.strptime(b['sale_start'], '%Y-%m-%d'), reverse=True)
+            sort = sorted(
+                filtered,
+                key=lambda b: datetime.strptime(b['sale_start'], '%Y-%m-%d'),
+                reverse=True
+            )
             headers = [
                 ("name_0", "Name"),
                 ("name_1", "Name2"),
