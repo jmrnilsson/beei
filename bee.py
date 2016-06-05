@@ -43,12 +43,26 @@ def main(sys_args):
                 })\
                 .to_list()
 
+            file.seek(0)
+            ratings = seq.json(file).filter(lambda b: b.get('rate'))
+
             with requests.session() as session:
                 http = HttpCache(session, None)
 
                 for beer in beers:
+                    rating = ratings.filter(
+                        lambda r: r['name'].lower() == beer['name_0'].lower()
+                    ).to_list()
+                    rating1 = ratings.filter(
+                        lambda r: r['name'].lower() == beer['name_1'].lower()
+                    ).to_list()
                     brewery_db.apply_if_find_single_by_name(http, beer, 'name_0', beer.update)
                     brewery_db.apply_if_find_single_by_name(http, beer, 'name_1', beer.update)
+
+                    if rating:
+                        beer.update(rating[0])
+                    if rating1:
+                        beer.update(rating1[0])
 
             logger.info('data', json.dumps(beers, indent=2, ensure_ascii=False))
             count += len(beers)
