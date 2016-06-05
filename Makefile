@@ -53,12 +53,12 @@ test-integration: setup
 
 .PHONY: run
 
-run:
+run: setup
 	@ echo "Running"
 	@ . venv/bin/activate; flake8 ./bee.py fetch utils
 	@ . venv/bin/activate; ./bee.py
 
-restore:
+restore: setup
 	@ echo "Restoring"
 	@ . venv/bin/activate; flake8 ./bee.py fetch utils
 	@ . venv/bin/activate; ./beerestore.py
