@@ -5,8 +5,11 @@ import codecs
 import json
 from datetime import datetime, timedelta
 from functional import seq
+import requests
 
+from fetch import brewery_db
 from utils import stdout_logger as logger
+from utils.http_cache import HttpCache
 
 
 def main(sys_args):
@@ -39,6 +42,14 @@ def main(sys_args):
                     if k in [h[0] for h in headers]
                 })\
                 .to_list()
+
+            with requests.session() as session:
+                http = HttpCache(session, None)
+
+                for beer in beers:
+                    brewery_db.apply_if_find_single_by_name(http, beer, 'name_0', beer.update)
+                    brewery_db.apply_if_find_single_by_name(http, beer, 'name_1', beer.update)
+
             logger.info('data', json.dumps(beers, indent=2, ensure_ascii=False))
             count += len(beers)
     else:

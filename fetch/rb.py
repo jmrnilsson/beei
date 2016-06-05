@@ -11,6 +11,7 @@ def _download_zip(session):
                 output.write(chunk)
                 # output.flush()
         zip = zipfile.ZipFile(output)
+        # for name in zip.namelist():
         content = zip.read('beers.txt').decode('utf16')
         lines = content.splitlines()
         headers = ['name', 'brewer', 'rate', 'thing']
@@ -18,7 +19,6 @@ def _download_zip(session):
         for line in lines:
             _, name, _, brewer, rate, thing = line.split('\t')[:6]
             rows.append([name, brewer, rate])
-        # for name in zip.namelist():
         return {'headers': headers, 'rows': rows}
 
     session.robot_allowed(RB_URL, RB_URL_ROBOTS)
