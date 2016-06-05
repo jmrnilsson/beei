@@ -9,7 +9,7 @@ class BeerList:
     def __init__(self):
         self.__items = []
         self.__include_keys = (
-            'abv', 'alcohol', 'name', '^volume$', '^price$',  'score', 'url', 'href', '^type$',
+            'abv', 'alcohol', 'name', '^volume$', '^price$', 'score', 'url', 'href', '^type$',
             '^fg', 'finalgravity', '^og', 'originalgravity', '^ibu', 'organic', '^category$',
             '^manufacturer$', '^supplier$', '^koscher$', '^ethical$', '^sale'
         )

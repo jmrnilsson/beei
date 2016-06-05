@@ -23,8 +23,10 @@ def get_top_50_for_style(session, url):
         headers = []
         rows = []
         element_rows = browser.find_by_css('#styleList > table.table > tbody > tr')
+
         for header in element_rows[0].find_by_css('th')[1:]:
             headers.append(header.text.lower())
+
         for index, row in enumerate(element_rows[1:]):
             beer = {}
             for index, element in enumerate(row.find_by_css('td')[1:]):
@@ -34,6 +36,7 @@ def get_top_50_for_style(session, url):
                 else:
                     beer[headers[index]] = element.text
             rows.append(beer)
+
         return rows
 
     session.robot_allowed(url, RB_URL_ROBOTS)

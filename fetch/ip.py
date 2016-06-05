@@ -16,15 +16,16 @@ def _get_ip(session):
 
 
 def _get_blocked_ip(session):
+    def to_ip_range(line):
+        start, end, _, assigned, owner = line.split(',')[:5]
+        return {
+            'start': start,
+            'end': end,
+            'assigned': datetime.strptime(assigned, '%d/%m/%y').strftime('%Y-%m-%d'),
+            'owner': owner
+        }
+
     def map_ip_ranges(response):
-        def to_ip_range(line):
-            start, end, _, assigned, owner = line.split(',')[:5]
-            return {
-                'start': start,
-                'end': end,
-                'assigned': datetime.strptime(assigned, '%d/%m/%y').strftime('%Y-%m-%d'),
-                'owner': owner
-            }
         return [to_ip_range(l) for l in response.text.splitlines() if len(l) > 10]
     return session.get(1, IP_URL_LIST_BLOCKED, map_to=map_ip_ranges)
 
