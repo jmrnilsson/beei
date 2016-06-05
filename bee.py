@@ -10,8 +10,7 @@ from utils import stdout_logger as logger
 
 
 def main(sys_args):
-    start_time = datetime.utcnow()
-    strptime = datetime.strptime
+    start_time, strptime = datetime.utcnow(), datetime.strptime,
     filename = os.path.dirname(os.path.abspath(__file__)) + '/beers.json'
 
     if os.path.isfile(filename):
