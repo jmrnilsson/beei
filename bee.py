@@ -4,6 +4,7 @@ import sys
 import codecs
 import json
 from datetime import datetime
+from functional import seq
 
 from utils import stdout_logger as logger
 
@@ -15,13 +16,6 @@ def main(sys_args):
     if os.path.isfile(filename):
         with codecs.open(filename, 'r', 'utf-8') as file:
             logger.info('file', file)
-            loaded = json.load(file)
-            filtered = filter(lambda b: b.get('sale_start'), loaded)
-            sort = sorted(
-                filtered,
-                key=lambda b: datetime.strptime(b['sale_start'], '%Y-%m-%d'),
-                reverse=True
-            )
             headers = [
                 ("name_0", "Name"),
                 ("name_1", "Name2"),
@@ -34,16 +28,20 @@ def main(sys_args):
                 # ("category", "Category"),
                 # ("ethical", "Ethical"),
                 # ("koscher", "Koscher"),
-
             ]
-            mapped = [
-                {
+            beers = seq.json(file)\
+                .filter(lambda b: b.get('sale_start'))\
+                .order_by(lambda b: datetime.strptime(b['sale_start'], '%Y-%m-%d'))\
+                .reverse()\
+                .take(25)\
+                .cache()\
+                .reverse()\
+                .map(lambda b: {
                     k: unicode(v) for k, v in b.iteritems()
                     if k in [h[0] for h in headers]
-                }
-                for b in reversed(sort[:25])
-            ]
-            logger.info('data', json.dumps(mapped, indent=2, ensure_ascii=False))
+                })\
+                .to_list()
+            logger.info('data', json.dumps(beers, indent=2, ensure_ascii=False))
     else:
         logger.error('file', '{} does not exists'.format(filename))
 
