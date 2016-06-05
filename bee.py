@@ -11,11 +11,12 @@ from utils import stdout_logger as logger
 
 def main(sys_args):
     start_time = datetime.utcnow()
+    strptime = datetime.strptime
     filename = os.path.dirname(os.path.abspath(__file__)) + '/beers.json'
 
     if os.path.isfile(filename):
         with codecs.open(filename, 'r', 'utf-8') as file:
-            logger.info('file', file)
+            logger.info('file', filename)
             headers = [
                 ("name_0", "Name"),
                 ("name_1", "Name2"),
@@ -24,15 +25,10 @@ def main(sys_args):
                 ("abv", "Alcohol"),
                 ("supplier", "Supplier"),
                 ("manufacturer", "Manufacturer")
-                # ("organic", "Organic"),
-                # ("category", "Category"),
-                # ("ethical", "Ethical"),
-                # ("koscher", "Koscher"),
             ]
             beers = seq.json(file)\
                 .filter(lambda b: b.get('sale_start'))\
-                .order_by(lambda b: datetime.strptime(b['sale_start'], '%Y-%m-%d'))\
-                .reverse()\
+                .sorted(key=lambda b: strptime(b['sale_start'], '%Y-%m-%d'), reverse=True)\
                 .take(25)\
                 .cache()\
                 .reverse()\
@@ -45,7 +41,7 @@ def main(sys_args):
     else:
         logger.error('file', '{} does not exists'.format(filename))
 
-    logger.info('duration', str((datetime.utcnow() - start_time).total_seconds()) + 's')
+    logger.info('duration', '{:.3f}s'.format((datetime.utcnow() - start_time).total_seconds()))
     return 0
 
 

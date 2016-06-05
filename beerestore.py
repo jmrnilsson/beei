@@ -39,9 +39,9 @@ def main(sys_args):
                 for b in brewery_db.find_by_name(http, name):
                     beer_list.add(b)
 
-        beer_list.save()
-        logger.info('duration', str((datetime.utcnow() - start_time).total_seconds()) + 's')
-        return 0
+    beer_list.save()
+    logger.info('duration', '{:.3f}s'.format((datetime.utcnow() - start_time).total_seconds()))
+    return 0
 
 
 if __name__ == "__main__":
