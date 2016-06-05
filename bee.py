@@ -12,9 +12,8 @@ from utils import stdout_logger as logger
 def main(sys_args):
     weeks, = sys_args or [21]
     start_time = datetime.utcnow()
-    from_date = (start_time - timedelta(weeks)).date()
+    from_date = (start_time - timedelta(int(weeks))).date()
     count = 0
-
     filename = os.path.dirname(os.path.abspath(__file__)) + '/beers.json'
 
     if os.path.isfile(filename):
@@ -52,6 +51,7 @@ def main(sys_args):
 
 def _strpdate(date_text):
     return datetime.strptime(date_text, '%Y-%m-%d').date()
+
 
 if __name__ == "__main__":
     main(sys.argv[1:])
