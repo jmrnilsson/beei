@@ -28,12 +28,3 @@ def _download_zip(session):
 def get_all(http):
     beers = _download_zip(http)
     return [dict(zip(beers.get('headers'), b)) for b in beers.get('rows')]
-    '''
-    # headers = {k: idx for idx, k in enumerate(dl_beers.get('headers'))}
-    rows = dl_beers.get('rows')
-    for beer in rows:
-        # name = rows[headers['name']]
-        # bb = brewery_db.find_by_name(http, name)
-        beer_list.add()
-        # beer_list.add(bb)
-    '''
