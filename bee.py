@@ -3,14 +3,18 @@ import os
 import sys
 import codecs
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 from functional import seq
 
 from utils import stdout_logger as logger
 
 
 def main(sys_args):
-    start_time, strptime = datetime.utcnow(), datetime.strptime,
+    weeks, = sys_args or [21]
+    start_time = datetime.utcnow()
+    from_date = (start_time - timedelta(weeks)).date()
+    count = 0
+
     filename = os.path.dirname(os.path.abspath(__file__)) + '/beers.json'
 
     if os.path.isfile(filename):
@@ -26,8 +30,8 @@ def main(sys_args):
                 ("manufacturer", "Manufacturer")
             ]
             beers = seq.json(file)\
-                .filter(lambda b: b.get('sale_start'))\
-                .sorted(key=lambda b: strptime(b['sale_start'], '%Y-%m-%d'), reverse=True)\
+                .filter(lambda b: b.get('sale_start') and _strpdate(b['sale_start']) > from_date)\
+                .sorted(key=lambda b: _strpdate(b['sale_start']), reverse=True)\
                 .take(25)\
                 .cache()\
                 .reverse()\
@@ -37,12 +41,17 @@ def main(sys_args):
                 })\
                 .to_list()
             logger.info('data', json.dumps(beers, indent=2, ensure_ascii=False))
+            count += len(beers)
     else:
         logger.error('file', '{} does not exists'.format(filename))
 
+    logger.info('count', 'found {} since {:%Y-%m-%d %H:%M}'.format(count, from_date))
     logger.info('duration', '{:.3f}s'.format((datetime.utcnow() - start_time).total_seconds()))
     return 0
 
+
+def _strpdate(date_text):
+    return datetime.strptime(date_text, '%Y-%m-%d').date()
 
 if __name__ == "__main__":
     main(sys.argv[1:])
