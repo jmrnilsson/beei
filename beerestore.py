@@ -26,9 +26,18 @@ def main(sys_args):
 
         for beer in s.api_get_all(http):
             beer_list.add(beer)
-            for name in [b for b in [beer['name_0'], beer['name_1']] if b]:
-                for b in brewery_db.find_by_name(http, name):
-                    beer_list.add(b)
+            # for name in [b for b in [beer['name_0'], beer['name_1']] if b]:
+            # for b in brewery_db.find_by_name(http, name):
+            #     beer_list.add(b)
+
+        dl_beers = rb.download_zip(http)
+        # headers = {k: idx for idx, k in enumerate(dl_beers.get('headers'))}
+        rows = dl_beers.get('rows')
+        for beer in rows:
+            # name = rows[headers['name']]
+            # bb = brewery_db.find_by_name(http, name)
+            beer_list.add(dict(zip(dl_beers.get('headers'), beer)))
+            # beer_list.add(bb)
 
     beer_list.save()
     logger.info('duration', '{:.3f}s'.format((datetime.utcnow() - start_time).total_seconds()))

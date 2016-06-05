@@ -68,16 +68,19 @@ class HttpCache:
     def _short_name(filename):
         return re.findall(r'(?<=\/)\w{3,}\-\w{3,}(?=\.json)', filename)[0]
 
-    def get(self, cache_days, url, params=None, map_to=lambda r: r.json()):
+    def get(self, cache_days, url, params=None, map_to=lambda r: r.json(), streamed=False):
         def fetch():
             headers = {'User-Agent': USER_AGENT}
-            response = self.session.get(url, params=params, headers=headers)
+            response = self.session.get(url, params=params, headers=headers, stream=streamed)
             response.raise_for_status()
-            if int(response.headers.get('X-Ratelimit-Remaining', 21)) < 20:
+            if int(response.headers.get('X-Ratelimit-Remaining', 51)) < 50:
                 self.rate_lock[self._site(url)] = True
                 logger.err('rate-limit', 'restricting access')
             return map_to(response)
         return self._cache(cache_days, fetch, url, params=params)
+
+    def get_streamed(self, cache_days, url, params=None, map_to=lambda r: r.json()):
+        return self.get(cache_days, url, params=params, map_to=map_to, streamed=True)
 
     def visit(self, cache_days, url, map_to=None):
         def fetch():

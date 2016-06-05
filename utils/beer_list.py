@@ -11,7 +11,7 @@ class BeerList:
         self.__include_keys = (
             'abv', 'alcohol', 'name', '^volume$', '^price$', 'score', 'url', 'href', '^type$',
             '^fg', 'finalgravity', '^og', 'originalgravity', '^ibu', 'organic', '^category$',
-            '^manufacturer$', '^supplier$', '^koscher$', '^ethical$', '^sale'
+            '^manufacturer$', '^supplier$', '^koscher$', '^ethical$', '^sale', '^rate$', '^brewer$'
         )
 
     def add(self, b):
