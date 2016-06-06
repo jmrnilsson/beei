@@ -31,34 +31,11 @@ def main(sys_args):
                 ("supplier", "Supplier"),
                 ("manufacturer", "Manufacturer")
             ]
-            beers = seq.json(file)\
-                .filter(lambda b: b.get('sale_start') and _strpdate(b['sale_start']) > from_date)\
-                .sorted(key=lambda b: _strpdate(b['sale_start']), reverse=True)\
-                .take(150)\
-                .cache()\
-                .reverse()\
-                .map(lambda b: {
-                    k: unicode(v) for k, v in b.iteritems()
-                    if k in [h[0] for h in headers]
-                })\
-                .to_list()
 
-            file.seek(0)
-            ratings = seq.json(file).filter(lambda b: b.get('rate'))
-
-            with requests.session() as session:
-                http = HttpCache(session, None)
-
-                for beer in beers:
-                    for n in ('name_0', 'name_1'):
-                        brewery_db.apply_if_find_single_by_name(http, beer, n, beer.update)
-                        _apply_rb(ratings, beer, n, beer.update)
-
-            beers_limited = seq(beers).filter(lambda b: any((
-                k for k, v in b.iteritems()
-                if k.startswith('rb-')
-            ))).to_list()
-            logger.info('data', json.dumps(beers_limited, indent=2, ensure_ascii=False))
+            beers = _get_beers_with_sale_start(file, from_date, headers)
+            ratings = _get_ratings(file)
+            _apply_ratings_to_beers(beers, ratings)
+            logger.info('data', json.dumps(beers, indent=2, ensure_ascii=False))
             count += len(beers)
     else:
         logger.error('file', '{} does not exists'.format(filename))
@@ -72,17 +49,44 @@ def _strpdate(date_text):
     return datetime.strptime(date_text, '%Y-%m-%d').date()
 
 
-def _eq_str(left, right):
-    def _lower_trim(text):
-        return text.lower().replace(' ', '')
-    return _lower_trim(left) == _lower_trim(right)
+def _get_beers_with_sale_start(file, from_date, headers):
+    file.seek(0)
+    return seq.json(file)\
+        .filter(lambda b: b.get('sale_start') and _strpdate(b['sale_start']) > from_date)\
+        .sorted(key=lambda b: _strpdate(b['sale_start']), reverse=True)\
+        .take(30)\
+        .cache()\
+        .reverse()\
+        .map(lambda b: {
+            k: unicode(v) for k, v in b.iteritems()
+            if k in [h[0] for h in headers]
+        })\
+        .to_list()
+
+
+def _get_ratings(file):
+    file.seek(0)
+    return seq.json(file).filter(lambda b: b.get('rate'))
+
+
+def _apply_ratings_to_beers(beers, ratings):
+    with requests.session() as session:
+        http = HttpCache(session, None)
+
+        for beer in beers:
+            for n in ('name_0', 'name_1'):
+                brewery_db.apply_if_find_single_by_name(http, beer, n, beer.update)
+                _apply_rb(ratings, beer, n, beer.update)
 
 
 def _apply_rb(ratings_seq, beer, key_name, func):
-    # print 'name=' + key_name
-    # print 'beer=' + str(beer)
-    rating = ratings_seq.filter(lambda r: _eq_str(r['name'], beer[key_name])).to_list()
-    # print rating
+    def in_str(expression, text):
+        def _lower_trim(text):
+            return text.lower().replace(' ', '')
+        return _lower_trim(expression) in _lower_trim(text)
+
+    rating = ratings_seq.filter(lambda r: in_str(beer[key_name], r['name'])).to_list()
+
     if rating:
         func({
             'rb-{1}-{0}'.format(k, key_name): v
