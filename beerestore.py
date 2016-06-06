@@ -3,7 +3,7 @@ import sys
 import requests
 from datetime import datetime
 from splinter import Browser
-from fetch import brewery_db, s, ip, rb
+from fetch import s, ip, rb
 from utils import stdout_logger as logger
 from utils.http_cache import HttpCache
 from utils.beer_list import BeerList
@@ -30,7 +30,7 @@ def main(sys_args):
             # for b in brewery_db.find_by_name(http, name):
             #     beer_list.add(b)
 
-        for beer in rb.get_all(http):
+        for beer in rb.zip_get_all(http):
             beer_list.add(beer)
 
     beer_list.save()

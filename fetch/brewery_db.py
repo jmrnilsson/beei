@@ -19,7 +19,7 @@ def apply_if_find_single_by_name(s, beer, key_name, func):
         beers = find_by_name(s, beer_name)
         if len(beers) == 1:
             func({
-                'bdb-{1}-{0}'.format(k, key_name): v
+                'brewery_db-{1}-{0}'.format(k, key_name): v
                 for k, v in beers[0].iteritems()
                 if isinstance(v, basestring)
             })
