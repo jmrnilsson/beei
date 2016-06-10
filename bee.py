@@ -31,10 +31,8 @@ def main(sys_args):
                 ("supplier", "Supplier"),
                 ("manufacturer", "Manufacturer")
             ]
-
-            beers = _get_beers_with_sale_start(file, from_date, headers)
-            ratings = _get_ratings(file)
-            _apply_ratings_to_beers(beers, ratings)
+            beers, ratings = _get_sales_start(file, from_date, headers), _get_ratings(file)
+            _apply_ratings(beers, ratings)
             logger.info('data', json.dumps(beers, indent=2, ensure_ascii=False))
             count += len(beers)
     else:
@@ -49,12 +47,12 @@ def _strpdate(date_text):
     return datetime.strptime(date_text, '%Y-%m-%d').date()
 
 
-def _get_beers_with_sale_start(file, from_date, headers):
+def _get_sales_start(file, from_date, headers):
     file.seek(0)
     return seq.json(file)\
         .filter(lambda b: b.get('sale_start') and _strpdate(b['sale_start']) > from_date)\
         .sorted(key=lambda b: _strpdate(b['sale_start']), reverse=True)\
-        .take(150)\
+        .take(50)\
         .cache()\
         .reverse()\
         .map(lambda b: {
@@ -69,7 +67,7 @@ def _get_ratings(file):
     return seq.json(file).filter(lambda b: b.get('rate'))
 
 
-def _apply_ratings_to_beers(beers, ratings):
+def _apply_ratings(beers, ratings):
     with requests.session() as session:
         http = HttpCache(session, None)
 
