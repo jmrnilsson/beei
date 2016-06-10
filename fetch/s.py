@@ -2,7 +2,7 @@ from xml.etree import ElementTree
 from utils.config import S_URL_ROBOTS, S_URL_API, S_API_MAP as map
 
 
-def api_get_all(session):
+def get_all(session):
     def map_to(r):
         root = ElementTree.fromstring(r.content)
         return [

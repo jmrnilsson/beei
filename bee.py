@@ -54,7 +54,7 @@ def _get_beers_with_sale_start(file, from_date, headers):
     return seq.json(file)\
         .filter(lambda b: b.get('sale_start') and _strpdate(b['sale_start']) > from_date)\
         .sorted(key=lambda b: _strpdate(b['sale_start']), reverse=True)\
-        .take(30)\
+        .take(150)\
         .cache()\
         .reverse()\
         .map(lambda b: {

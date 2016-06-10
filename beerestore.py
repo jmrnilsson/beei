@@ -24,13 +24,10 @@ def main(sys_args):
             logger.err('ip', unicode(e.message))
             sys.exit(0)
 
-        for beer in s.api_get_all(http):
+        for beer in s.get_all(http):
             beer_list.add(beer)
-            # for name in [b for b in [beer['name_0'], beer['name_1']] if b]:
-            # for b in brewery_db.find_by_name(http, name):
-            #     beer_list.add(b)
 
-        for beer in rb.zip_get_all(http):
+        for beer in rb.get_all(http):
             beer_list.add(beer)
 
     beer_list.save()
