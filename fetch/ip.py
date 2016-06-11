@@ -1,7 +1,7 @@
 from datetime import datetime
 import re
 from utils import stdout_logger as logger
-from utils.config import IP_URL_CHECK, IP_URL_LIST_BLOCKED
+from utils.config import IP_URL_CHECK, IP_URL_BLOCKED
 
 
 def _get_ip(session):
@@ -27,7 +27,7 @@ def _get_blocked_ip(session):
 
     def map_ip_ranges(response):
         return [to_ip_range(l) for l in response.text.splitlines() if len(l) > 10]
-    return session.get(1, IP_URL_LIST_BLOCKED, map_to=map_ip_ranges)
+    return session.get(1, IP_URL_BLOCKED, map_to=map_ip_ranges)
 
 
 def _zfill(ip_address):

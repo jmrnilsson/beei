@@ -3,7 +3,7 @@ import sys
 import requests
 from datetime import datetime
 from splinter import Browser
-from fetch import s, ip, rb
+from fetch import sysb, ip, rb
 from utils import stdout_logger as logger
 from utils.http_cache import HttpCache
 from utils.beer_list import BeerList
@@ -24,7 +24,7 @@ def main(sys_args):
             logger.err('ip', unicode(e.message))
             sys.exit(0)
 
-        for beer in s.get_all(http):
+        for beer in sysb.get_all(http):
             beer_list.add(beer)
 
         for beer in rb.get_all(http):
