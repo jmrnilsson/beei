@@ -1,6 +1,9 @@
 # Bee.i
 
-## Description
+1.
+
+1.
+# Description
 A shell client for fetching beer data.
 
 ## Licensing information
